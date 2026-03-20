@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "UMC_10th"
+rootProject.name = "View_Layout"
 include(":app")
