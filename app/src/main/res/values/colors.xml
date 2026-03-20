@@ -13,5 +13,9 @@
     <color name="normal">#BEC3ED</color>
     <color name="sad">#B1D3B9</color>
     <color name="angry">#EB8B8B</color>
-    <color name="backgroung_sub">#9E9494</color>
+    <color name="background_happy">#5D5326</color>
+    <color name="background_excited">#264653</color>
+    <color name="background_normal">#3D345C</color>
+    <color name="background_sad">#2A3C24</color>
+    <color name="background_angry">#5C2626</color>
 </resources>
