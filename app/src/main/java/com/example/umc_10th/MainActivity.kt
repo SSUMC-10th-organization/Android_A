@@ -22,5 +22,43 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        binding.mainBottomNav.setOnItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.home_fragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragmentContainer, HomeFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.purchase_fragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragmentContainer, PurchaseFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.wishlist_fragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragmentContainer, WishlisFragment())
+                        .commit()
+                    true
+                }
+                R.id.shopping_fragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragmentContainer, ShoppingFragment())
+                        .commit()
+                    true
+                }
+                R.id.profile_fragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_fragmentContainer, ProfileFragment())
+                        .commit()
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 }
