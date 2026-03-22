@@ -7,13 +7,172 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_postvector"
+        android:contentDescription="뒤로가기"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/main"
+        app:layout_constraintEnd_toEndOf="@+id/main"
+        app:layout_constraintTop_toTopOf="@+id/main"
+        app:layout_constraintBottom_toBottomOf="@+id/main">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘 하루는 어땠나요?"
+            android:textSize="30sp"
+            android:textColor="#000000"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvSubTitle"/>
+        <TextView
+            android:id="@+id/tvSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="감정우표를 선택해주세요"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            app:layout_constraintBottom_toTopOf="@+id/tvDescription"/>
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선택한 감정우표를 기반으로 맞춤형 질문이 배달됩니다"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="11dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+            app:layout_constraintBottom_toTopOf="@+id/ivYellow"/>
+
+        <ImageView
+            android:id="@+id/ivYellow"
+            android:layout_width="40dp"
+            android:layout_height="44.130435943603516dp"
+            android:src="@drawable/ic_postyellow"
+            android:layout_marginTop="23dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+            app:layout_constraintBottom_toTopOf="@+id/tvYellow" />
+        <TextView
+            android:id="@+id/tvYellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="더없이 행복한 하루였어요"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivYellow"
+            app:layout_constraintBottom_toTopOf="@+id/ivSkyblue"/>
+        <ImageView
+            android:id="@+id/ivSkyblue"
+            android:layout_width="40dp"
+            android:layout_height="44.130435943603516dp"
+            android:src="@drawable/ic_postskyblue"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvYellow"
+            app:layout_constraintBottom_toTopOf="@+id/tvSkyblue" />
+        <TextView
+            android:id="@+id/tvSkyblue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="들뜨고 흥분돼요"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivSkyblue"
+            app:layout_constraintBottom_toTopOf="@+id/ivPurple"/>
+        <ImageView
+            android:id="@+id/ivPurple"
+            android:layout_width="40dp"
+            android:layout_height="44.130435943603516dp"
+            android:src="@drawable/ic_postpurple"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSkyblue"
+            app:layout_constraintBottom_toTopOf="@+id/tvPurple" />
+        <TextView
+            android:id="@+id/tvPurple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="평범한 하루였어요"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivPurple"
+            app:layout_constraintBottom_toTopOf="@+id/ivGreen"/>
+        <ImageView
+            android:id="@+id/ivGreen"
+            android:layout_width="40dp"
+            android:layout_height="44.130435943603516dp"
+            android:src="@drawable/ic_postgreen"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPurple"
+            app:layout_constraintBottom_toTopOf="@+id/tvGreen" />
+        <TextView
+            android:id="@+id/tvGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="생각이 많아지고 불안해요"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivGreen"
+            app:layout_constraintBottom_toTopOf="@+id/ivRed"/>
+        <ImageView
+            android:id="@+id/ivRed"
+            android:layout_width="40dp"
+            android:layout_height="44.130435943603516dp"
+            android:src="@drawable/ic_postred"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGreen"
+            app:layout_constraintBottom_toTopOf="@+id/tvRed" />
+        <TextView
+            android:id="@+id/tvRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="부글부글 화가 나요"
+            android:textSize="8sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivRed"
+            app:layout_constraintBottom_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
