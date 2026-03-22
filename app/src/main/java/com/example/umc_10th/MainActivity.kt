@@ -16,6 +16,9 @@ import com.example.umc_10th.fragment.WishlistFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var bottomNav: BottomNavigationView  // 추가
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNav = findViewById(R.id.bottom_nav)  // val -> 필드로 변경
         val typeface = ResourcesCompat.getFont(this, R.font.noto_sans_regular)
 
         for (i in 0 until bottomNav.menu.size()) {
@@ -47,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 초기 화면
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, HomeFragment())
             .commit()
@@ -66,5 +68,10 @@ class MainActivity : AppCompatActivity() {
                 .commit()
             true
         }
+    }
+
+    // 추가
+    fun navigateToShop() {
+        bottomNav.selectedItemId = R.id.nav_shop
     }
 }
