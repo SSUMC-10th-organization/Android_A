@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/housesimple_ic"
+        android:title="홈" />
+    <item
+        android:id="@+id/purchaseFragment"
+        android:icon="@drawable/listmagnifyingglass_ic"
+        android:title="구매하기" />
+    <item
+        android:id="@+id/wishlistFragment"
+        android:icon="@drawable/heartstraight_ic"
+        android:title="위시리스트" />
+    <item
+        android:id="@+id/shoppingcartFragment"
+        android:icon="@drawable/bagsimple_ic"
+        android:title="장바구니" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/user_ic"
+        android:title="프로필" />
+
+
+
+</menu>
