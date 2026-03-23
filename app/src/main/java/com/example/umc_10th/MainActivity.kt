@@ -1,18 +1,68 @@
 package com.example.umc_10th
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.umc_10th.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "LIFE_QUIZ"
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        enableEdgeToEdge()
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportFragmentManager.beginTransaction()
+            .replace(binding.mainFragmentContainer.id, HomeFragment())
+            .commit()
+
+        binding.mainBnv.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeFragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, HomeFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.purchaseFragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, PurchaseFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.wishlistFragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, WishlistFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.cartFragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, CartFragment())
+                        .commit()
+                    true
+                }
+
+                R.id.profileFragment -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, ProfileFragment())
+                        .commit()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
         Log.d(TAG, "onCreate")
     }
 
