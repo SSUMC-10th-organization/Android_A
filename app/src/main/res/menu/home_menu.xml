@@ -6,7 +6,7 @@
         android:icon="@drawable/housesimple_ic"
         android:title="홈" />
     <item
-        android:id="@+id/purchaseFragment"
+        android:id="@+id/shoppingcartFragment"
         android:icon="@drawable/listmagnifyingglass_ic"
         android:title="구매하기" />
     <item
@@ -14,7 +14,7 @@
         android:icon="@drawable/heartstraight_ic"
         android:title="위시리스트" />
     <item
-        android:id="@+id/shoppingcartFragment"
+        android:id="@+id/purchaseFragment"
         android:icon="@drawable/bagsimple_ic"
         android:title="장바구니" />
     <item
