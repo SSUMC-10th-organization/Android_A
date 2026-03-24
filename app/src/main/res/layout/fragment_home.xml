@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/main"
+        app:layout_constraintEnd_toEndOf="@+id/main"
+        app:layout_constraintTop_toTopOf="@+id/main"
+        app:layout_constraintBottom_toBottomOf="@+id/main">
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_home_banner"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="15dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discover"
+        android:textSize="30sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9월 4일 목요일"
+        android:textSize="15sp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="100dp" />
+
+</FrameLayout>
