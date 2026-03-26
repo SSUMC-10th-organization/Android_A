@@ -17,8 +17,6 @@
         app:layout_constraintBottom_toTopOf="@id/main_bnv" />
 
 
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bnv"
         android:layout_width="match_parent"

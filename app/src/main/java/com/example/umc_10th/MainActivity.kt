@@ -16,10 +16,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. 앱 실행 시 첫 화면 설정 (보통 HomeFragment를 먼저 띄웁니다)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main, HomeFragment())
-            .commitAllowingStateLoss()
+// 1. [수정] 시작 화면도 반드시 main_frm에 넣어줘야 합니다!
+        if (savedInstanceState == null) { // 앱 처음 실행 시에만 프래그먼트 생성
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, HomeFragment()) // R.id.main -> R.id.main_frm
+                .commitAllowingStateLoss()
+        }
 
         // 2. 하단 탭 클릭 시 Fragment 전환 설정
         binding.mainBnv.setOnItemSelectedListener { item ->
