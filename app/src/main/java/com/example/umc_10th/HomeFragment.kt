@@ -13,7 +13,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var productAdapter: ProductAdapter
+    private lateinit var homeProductAdapter: HomeProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,15 +27,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(
-            ProductSampleRepository.productList
-        ) { product ->
-            product.isLiked = !product.isLiked
-            productAdapter.notifyDataSetChanged()
-        }
+        val homeProductList = ProductSampleRepository.productList.takeLast(2).toMutableList()
+
+        homeProductAdapter = HomeProductAdapter(homeProductList)
 
         binding.rvHomeProduct.apply {
-            adapter = productAdapter
+            adapter = homeProductAdapter
             layoutManager = LinearLayoutManager(
                 requireContext(),
                 LinearLayoutManager.HORIZONTAL,
