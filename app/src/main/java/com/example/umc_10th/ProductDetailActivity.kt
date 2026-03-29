@@ -3,9 +3,7 @@ package com.example.umc_10th
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -29,8 +27,7 @@ class ProductDetailActivity : AppCompatActivity() {
         val tvDescription = findViewById<TextView>(R.id.tv_detail_description)
         val tvPrice = findViewById<TextView>(R.id.tv_detail_price)
         val btnAddToCart = findViewById<Button>(R.id.btn_add_to_cart)
-        val btnWishlist = findViewById<LinearLayout>(R.id.btn_wishlist)
-        val ivFavorite = findViewById<ImageView>(R.id.iv_detail_favorite)
+        val btnWishlist = findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_wishlist)
 
         // 데이터 세팅
         tvToolbarTitle.text = productName
@@ -38,27 +35,24 @@ class ProductDetailActivity : AppCompatActivity() {
         tvName.text = productName
         tvDescription.text = productDescription
         tvPrice.text = productPrice
-        updateFavoriteIcon(ivFavorite, isFavorite)
+        updateFavoriteIcon(btnWishlist, isFavorite)
 
         // 뒤로가기
         ivBack.setOnClickListener { finish() }
 
         // 장바구니 추가
         btnAddToCart.setOnClickListener {
-            Toast.makeText(this, "장바구니에 추가되었습니다", Toast.LENGTH_SHORT).show()
         }
 
         // 위시리스트 토글
         btnWishlist.setOnClickListener {
             isFavorite = !isFavorite
-            updateFavoriteIcon(ivFavorite, isFavorite)
-            val msg = if (isFavorite) "위시리스트에 추가됨" else "위시리스트에서 제거됨"
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            updateFavoriteIcon(btnWishlist, isFavorite)
         }
     }
 
-    private fun updateFavoriteIcon(iv: ImageView, isFavorite: Boolean) {
-        iv.setImageResource(
+    private fun updateFavoriteIcon(btn: com.google.android.material.button.MaterialButton, isFavorite: Boolean) {
+        btn.setIconResource(
             if (isFavorite) R.drawable.ic_heart_filled
             else R.drawable.ic_heart_empty
         )

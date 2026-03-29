@@ -57,10 +57,7 @@ class ShopFragment : Fragment() {
                 }
                 startActivity(intent)
             },
-            onFavoriteClick = { product, position ->
-                val msg = if (product.isFavorite) "위시리스트에 추가됨" else "위시리스트에서 제거됨"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-            }
+            onFavoriteClick = { product, position -> }
         )
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
