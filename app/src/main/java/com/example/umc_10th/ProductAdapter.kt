@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_10th.databinding.ItemProductBinding
 
-class HomeProductAdapter(
+class ProductAdapter(
     private var productList: MutableList<ProductData>,
-    private val onClicked: (ProductData) -> Unit): RecyclerView.Adapter<HomeProductAdapter.ProductViewHolder>() {
+    private val onClicked: (ProductData) -> Unit): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
     inner class ProductViewHolder(var binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductData) {
             binding.ivProduct.setImageResource(product.img);
