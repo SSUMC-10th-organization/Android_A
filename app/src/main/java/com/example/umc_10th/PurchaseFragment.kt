@@ -26,4 +26,6 @@ class PurchaseFragment : Fragment() {
             (activity as MainActivity).changeFragment(3)
         }
     }
+
+
 }
