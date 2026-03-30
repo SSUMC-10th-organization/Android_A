@@ -27,8 +27,8 @@ class ProductAdapter(
         holder: ProductViewHolder,
         position: Int
     ) {
-        val friendData = productList[position]
-        holder.bind(friendData)
+        val itemData = productList[position]
+        holder.bind(itemData)
     }
 
     override fun getItemCount(): Int {

@@ -46,7 +46,6 @@ class HomeFragment: Fragment() {
             })
         binding.rcHome.adapter = wishlistAdapter;
         binding.rcHome.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false);
-
     }
 
 

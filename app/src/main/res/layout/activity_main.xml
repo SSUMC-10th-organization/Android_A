@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <!--TODO: dp -> sp-->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_fragmentContainer"
         android:layout_width="match_parent"
