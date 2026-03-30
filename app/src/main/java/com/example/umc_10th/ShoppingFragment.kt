@@ -29,10 +29,10 @@
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             binding.btnPurchase.setOnClickListener {
+                //        TODO: 쇼핑 fragment에서 주문하기 버튼 클릭 시, bottom_nav_menu의 선택된 게 구매하기 탭에 옮겨지게 하기
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.main_fragmentContainer, PurchaseFragment())
                     .commit()
             }
         }
-
     }

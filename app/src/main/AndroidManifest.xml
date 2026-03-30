@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UMC_10th">
         <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

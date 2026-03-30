@@ -7,8 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.umc_10th.databinding.ActivityMainBinding
 
-import androidx.core.content.ContextCompat
-
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.wishlist_fragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_fragmentContainer, WishlisFragment())
+                        .replace(R.id.main_fragmentContainer, WishlistFragment())
                         .commit()
                     true
                 }
