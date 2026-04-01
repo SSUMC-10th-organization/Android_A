@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.umc_10th.MainActivity
 import com.example.umc_10th.data.Product
 import com.example.umc_10th.adapter.ProductAdapter
 import com.example.umc_10th.R
+import com.example.umc_10th.data.SharedPreferenceManager
 import com.example.umc_10th.databinding.FragmentHomeBinding
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
-    // 1. binding 변수를 클래스 최상단에 선언해야 모든 함수에서 쓸 수 있습니다.
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -35,22 +40,44 @@ class HomeFragment : Fragment() {
     }
 
     private fun initDummyData() {
-        productList.apply {
-            add(Product(R.drawable.shoes1, "Air Jordan XXXVI", "US$185"))
-            add(Product(R.drawable.shoes2, "Nike Air Force 1 '07", "US$115"))
+        val type = object : TypeToken<List<Product>>() {}.type
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            // 1. DataStore에서 먼저 데이터를 읽어옵니다.
+            val savedList = MainActivity.prefManager.getObjectList<Product>(
+                SharedPreferenceManager.KEY_HOME_PRODUCTS, type
+            ).first()
+
+            if (savedList.isEmpty()) {
+                // 2. 데이터가 없으면 더미 데이터 생성 및 저장
+                val dummy = mutableListOf(
+                    Product(R.drawable.shoes1, "Air Jordan XXXVI", "US$185"),
+                    Product(R.drawable.shoes2, "Nike Air Force 1 '07", "US$115")
+                )
+                productList.clear()
+                productList.addAll(dummy)
+
+                MainActivity.prefManager.saveObjectList(
+                    SharedPreferenceManager.KEY_HOME_PRODUCTS,
+                    dummy
+                )
+            } else {
+                // 3. 저장된 데이터가 있으면 리스트에 채우기
+                productList.clear()
+                productList.addAll(savedList)
+            }
+
+            // 4. [중요] 비동기 로딩이 끝났으므로 어댑터에 데이터 변경을 알립니다.
+            binding.productRecyclerView.adapter?.notifyDataSetChanged()
         }
-    }
+    } // <-- initDummyData 함수 끝
 
     private fun initRecyclerView() {
-        // 1. 어댑터 생성
         val productAdapter = ProductAdapter(productList) { product ->
-            // 클릭 시 동작 (필요할 때 작성)
+            // 클릭 시 동작
         }
 
-        // 2. 바인딩된 ID 사용 (product_recycler_view -> productRecyclerView)
         binding.productRecyclerView.adapter = productAdapter
-
-        // 3. 레이아웃 매니저 설정
         binding.productRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }

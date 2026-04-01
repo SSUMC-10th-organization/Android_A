@@ -5,19 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.umc_10th.MainActivity
 import com.example.umc_10th.adapter.PurchaseAdapter
 import com.example.umc_10th.data.PurchaseProduct
 import com.example.umc_10th.R
-import com.example.umc_10th.data.WishlistStorage
+import com.example.umc_10th.data.SharedPreferenceManager
 import com.example.umc_10th.databinding.FragmentPurchaseBinding
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class PurchaseFragment : Fragment() {
 
     private var _binding: FragmentPurchaseBinding? = null
     private val binding get() = _binding!!
 
-    // 1. 장바구니 전용 데이터 리스트 (PurchaseProduct 타입)
     private var purchaseList = mutableListOf<PurchaseProduct>()
 
     override fun onCreateView(
@@ -36,69 +40,71 @@ class PurchaseFragment : Fragment() {
     }
 
     private fun initDummyData() {
-        purchaseList.clear() // 기존 리스트 비우기
+        val type = object : TypeToken<List<PurchaseProduct>>() {}.type
 
-        // 1. rawData 변수 선언 (이 변수는 이 함수 안에서만 유효합니다)
-        val rawData = listOf(
-            PurchaseProduct(
-                R.drawable.socks1,
-                "Nike Everyday Plus\nCushioned",
-                "Training Ankle Socks (6 Pairs)\n5 Colours",
-                "US$20"
-            ),
-            PurchaseProduct(
-                R.drawable.socks2,
-                "Nike Elite Crew",
-                "Basketball Crew Socks\n3 Colours",
-                "US$160"
-            ),
-            PurchaseProduct(
-                R.drawable.women_shoes,
-                "Nike Air Force 1 '07",
-                "Classic Design",
-                "US$115"
-            ),
-            PurchaseProduct(R.drawable.men_shoes, "Jordan Essentials", "Comfortable Fit", "US$35"),
-            PurchaseProduct(
-                R.drawable.socks1,
-                "Nike Spark Lightweight",
-                "Breathable Fabric",
-                "US$18"
-            ),
-            PurchaseProduct(R.drawable.socks2, "Nike Multiplier", "Performance Socks", "US$22"),
-            PurchaseProduct(R.drawable.women_shoes, "Nike Air Max Pro", "Air Cushioning", "US$180"),
-            PurchaseProduct(R.drawable.men_shoes, "Nike Pegasus 40", "Running Shoes", "US$130")
-        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            // 1. DataStore에서 먼저 읽어오기
+            val savedList = MainActivity.prefManager.getObjectList<PurchaseProduct>(
+                SharedPreferenceManager.KEY_PURCHASE_PRODUCTS, type
+            ).first()
 
-        // 2. 위에서 만든 rawData를 사용하여 purchaseList에 추가
-        rawData.forEach { product ->
-            // WishlistStorage에 이미 있는 상품인지 확인해서 하트 상태 결정
-            product.isFavorite = WishlistStorage.isFavorite(product.name!!)
-            purchaseList.add(product)
+            if (savedList.isEmpty()) {
+                // 2. 저장된 게 없다면 새로 만들기
+                val dummy = mutableListOf(
+                    PurchaseProduct(R.drawable.socks1, "Nike Everyday Plus\nCushioned", "Training Ankle Socks (6 Pairs)\n5 Colours", "US$20"),
+                    PurchaseProduct(R.drawable.socks2, "Nike Elite Crew", "Basketball Crew Socks\n3 Colours", "US$160"),
+                    PurchaseProduct(R.drawable.women_shoes, "Nike Air Force 1 '07", "Classic Design", "US$115"),
+                    PurchaseProduct(R.drawable.men_shoes, "Jordan Essentials", "Comfortable Fit", "US$35"),
+                    PurchaseProduct(R.drawable.socks1, "Nike Spark Lightweight", "Breathable Fabric", "US$18"),
+                    PurchaseProduct(R.drawable.socks2, "Nike Multiplier", "Performance Socks", "US$22"),
+                    PurchaseProduct(R.drawable.women_shoes, "Nike Air Max Pro", "Air Cushioning", "US$180"),
+                    PurchaseProduct(R.drawable.men_shoes, "Nike Pegasus 40", "Running Shoes", "US$130")
+                )
+
+                // 하트 상태 반영
+                dummy.forEach { product ->
+                    product.isFavorite = MainActivity.wishlistStorage.isFavorite(product.name!!)
+                }
+
+                purchaseList.clear()
+                purchaseList.addAll(dummy)
+
+                // DataStore에 첫 저장
+                MainActivity.prefManager.saveObjectList(
+                    SharedPreferenceManager.KEY_PURCHASE_PRODUCTS,
+                    dummy
+                )
+            } else {
+                // 3. 이미 저장된 데이터가 있다면 하트 상태만 업데이트해서 불러오기
+                savedList.forEach { product ->
+                    product.isFavorite = MainActivity.wishlistStorage.isFavorite(product.name!!)
+                }
+                purchaseList.clear()
+                purchaseList.addAll(savedList)
+            }
+
+            // 4. 데이터 로딩 후 화면 갱신
+            binding.purchaseRecyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
-
     private fun initRecyclerView() {
-        // 2. 전용 어댑터 연결 (아이템 클릭, 하트 클릭 2개의 콜백 전달)
         val purchaseAdapter = PurchaseAdapter(
             itemList = purchaseList,
             onItemClicked = { product ->
-                // 상품 자체를 클릭했을 때의 동작 (필요 시 작성)
+                // 상품 클릭 시 동작
             },
             onHeartClicked = { product ->
-                // 3. 하트 상태에 따라 WishlistStorage(데이터 저장소)에 넣거나 빼기
                 if (product.isFavorite) {
-                    WishlistStorage.addProduct(product)
+                    MainActivity.wishlistStorage.addProduct(product)
                 } else {
-                    WishlistStorage.removeProduct(product)
+                    MainActivity.wishlistStorage.removeProduct(product)
                 }
             }
         )
 
         binding.purchaseRecyclerView.apply {
             adapter = purchaseAdapter
-            // 2열 격자 레이아웃 설정
             layoutManager = GridLayoutManager(requireContext(), 2)
             setHasFixedSize(true)
         }

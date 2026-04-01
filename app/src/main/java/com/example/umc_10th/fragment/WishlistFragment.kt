@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.umc_10th.MainActivity
 import com.example.umc_10th.adapter.WishlistAdapter
 import com.example.umc_10th.data.WishlistStorage
 import com.example.umc_10th.databinding.FragmentWishlistBinding
@@ -34,10 +35,10 @@ class WishlistFragment : Fragment() {
 
     private fun initRecyclerView() {
         // 4. WishlistStorage에서 찜한 데이터 리스트 가져오기
-        val wishlistData = WishlistStorage.getWishlist()
+        val wishlistData = MainActivity.wishlistStorage.getWishlist()
 
         // 5. 하트가 없는 전용 어댑터(WishlistAdapter) 생성
-        val wishlistAdapter = WishlistAdapter(wishlistData)
+        val wishlistAdapter = WishlistAdapter(wishlistData.toMutableList())
 
         // 6. 리사이클러뷰 설정 (2열 격자)
         binding.wishlistRecyclerView.apply {

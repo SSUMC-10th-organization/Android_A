@@ -2,20 +2,33 @@ package com.example.umc_10th
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.umc_10th.data.WishlistStorage
 import com.example.umc_10th.databinding.ActivityHomeBinding
 import com.example.umc_10th.fragment.HomeFragment
 import com.example.umc_10th.fragment.ProfileFragment
 import com.example.umc_10th.fragment.PurchaseFragment
 import com.example.umc_10th.fragment.ShoppingcartFragment
 import com.example.umc_10th.fragment.WishlistFragment
+import com.example.umc_10th.data.SharedPreferenceManager
 
 class MainActivity : AppCompatActivity() {
-
+    companion object {
+        lateinit var wishlistStorage: WishlistStorage
+        lateinit var prefManager: SharedPreferenceManager
+    }
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // 매니저와 스토리지 생성
+        prefManager = SharedPreferenceManager(this)
+        wishlistStorage = WishlistStorage(prefManager)
+
+        wishlistStorage.loadFromDataStore()
+
         setContentView(binding.root)
 
 // 1. [수정] 시작 화면도 반드시 main_frm에 넣어줘야 합니다!
