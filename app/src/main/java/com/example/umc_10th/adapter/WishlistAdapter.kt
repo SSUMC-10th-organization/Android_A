@@ -1,9 +1,10 @@
-package com.example.umc_10th
+package com.example.umc_10th.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.umc_10th.databinding.ItemWishlistBinding // ⭐ 새로 만든 바인딩
+import com.example.umc_10th.data.PurchaseProduct
+import com.example.umc_10th.databinding.ItemWishlistBinding
 
 class WishlistAdapter(
     private val itemList: MutableList<PurchaseProduct>

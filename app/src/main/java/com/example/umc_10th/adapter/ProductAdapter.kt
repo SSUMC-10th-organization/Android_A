@@ -1,9 +1,9 @@
-package com.example.umc_10th
+package com.example.umc_10th.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-// 1. 홈 화면용 레이아웃 바인딩으로 복구
+import com.example.umc_10th.data.Product
 import com.example.umc_10th.databinding.ItemHomeBinding
 
 class ProductAdapter(

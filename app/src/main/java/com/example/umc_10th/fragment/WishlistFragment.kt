@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.umc_10th.adapter.WishlistAdapter
+import com.example.umc_10th.data.WishlistStorage
 import com.example.umc_10th.databinding.FragmentWishlistBinding
 
 class WishlistFragment : Fragment() {

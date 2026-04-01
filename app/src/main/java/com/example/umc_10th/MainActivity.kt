@@ -1,11 +1,13 @@
 package com.example.umc_10th
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.umc_10th.databinding.ActivityHomeBinding
+import com.example.umc_10th.fragment.HomeFragment
+import com.example.umc_10th.fragment.ProfileFragment
+import com.example.umc_10th.fragment.PurchaseFragment
+import com.example.umc_10th.fragment.ShoppingcartFragment
+import com.example.umc_10th.fragment.WishlistFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.purchaseFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, PurchaseFragment())
+                        .replace(R.id.main_frm, ShoppingcartFragment())
                         .commitAllowingStateLoss()
                     true
                 }
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.shoppingcartFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, ShoppingcartFragment())
+                        .replace(R.id.main_frm, PurchaseFragment())
                         .commitAllowingStateLoss()
                     true
                 }
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         when (index) {
             3 -> { // '구매' 탭으로 이동하고 싶을 때 (index 1로 가정)
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, ShoppingcartFragment())
+                    .replace(R.id.main_frm, PurchaseFragment())
                     .commitAllowingStateLoss()
 
                 // 핵심: 하단 바의 아이콘도 '구매'로 변경 (ID는 본인의 menu/home_menu.xml 확인)

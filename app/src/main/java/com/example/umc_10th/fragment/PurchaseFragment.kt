@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.umc_10th.databinding.FragmentShoppingcartBinding
+import com.example.umc_10th.adapter.PurchaseAdapter
+import com.example.umc_10th.data.PurchaseProduct
+import com.example.umc_10th.R
+import com.example.umc_10th.data.WishlistStorage
+import com.example.umc_10th.databinding.FragmentPurchaseBinding
 
-class ShoppingcartFragment : Fragment() {
+class PurchaseFragment : Fragment() {
 
-    private var _binding: FragmentShoppingcartBinding? = null
+    private var _binding: FragmentPurchaseBinding? = null
     private val binding get() = _binding!!
 
     // 1. 장바구니 전용 데이터 리스트 (PurchaseProduct 타입)
@@ -20,7 +24,7 @@ class ShoppingcartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentShoppingcartBinding.inflate(inflater, container, false)
+        _binding = FragmentPurchaseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,11 +40,31 @@ class ShoppingcartFragment : Fragment() {
 
         // 1. rawData 변수 선언 (이 변수는 이 함수 안에서만 유효합니다)
         val rawData = listOf(
-            PurchaseProduct(R.drawable.socks1, "Nike Everyday Plus\nCushioned", "Training Ankle Socks (6 Pairs)\n5 Colours", "US$20"),
-            PurchaseProduct(R.drawable.socks2, "Nike Elite Crew", "Basketball Crew Socks\n3 Colours", "US$160"),
-            PurchaseProduct(R.drawable.women_shoes, "Nike Air Force 1 '07", "Classic Design", "US$115"),
+            PurchaseProduct(
+                R.drawable.socks1,
+                "Nike Everyday Plus\nCushioned",
+                "Training Ankle Socks (6 Pairs)\n5 Colours",
+                "US$20"
+            ),
+            PurchaseProduct(
+                R.drawable.socks2,
+                "Nike Elite Crew",
+                "Basketball Crew Socks\n3 Colours",
+                "US$160"
+            ),
+            PurchaseProduct(
+                R.drawable.women_shoes,
+                "Nike Air Force 1 '07",
+                "Classic Design",
+                "US$115"
+            ),
             PurchaseProduct(R.drawable.men_shoes, "Jordan Essentials", "Comfortable Fit", "US$35"),
-            PurchaseProduct(R.drawable.socks1, "Nike Spark Lightweight", "Breathable Fabric", "US$18"),
+            PurchaseProduct(
+                R.drawable.socks1,
+                "Nike Spark Lightweight",
+                "Breathable Fabric",
+                "US$18"
+            ),
             PurchaseProduct(R.drawable.socks2, "Nike Multiplier", "Performance Socks", "US$22"),
             PurchaseProduct(R.drawable.women_shoes, "Nike Air Max Pro", "Air Cushioning", "US$180"),
             PurchaseProduct(R.drawable.men_shoes, "Nike Pegasus 40", "Running Shoes", "US$130")
@@ -72,7 +96,7 @@ class ShoppingcartFragment : Fragment() {
             }
         )
 
-        binding.shoppingcartRecyclerView.apply {
+        binding.purchaseRecyclerView.apply {
             adapter = purchaseAdapter
             // 2열 격자 레이아웃 설정
             layoutManager = GridLayoutManager(requireContext(), 2)

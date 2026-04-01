@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.data
 
 // ⭐ object는 싱글톤(Singleton)으로, 앱 어디서든 하나의 리스트를 공유하게 해줍니다.
 object WishlistStorage {
