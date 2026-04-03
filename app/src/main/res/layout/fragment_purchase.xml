@@ -10,12 +10,25 @@
         android:id="@+id/purchase_tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+
+        android:layout_marginTop="40dp"
+        android:paddingBottom="8dp"
+
+        app:tabMode="scrollable"
+        app:tabGravity="start"
+
+        app:tabPaddingStart="20dp"
+        app:tabPaddingEnd="20dp"
+
         app:tabIndicatorColor="@color/black"
         app:tabIndicatorHeight="2dp"
+        app:tabIndicatorFullWidth="false"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="#888888"
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
         app:tabRippleColor="@android:color/transparent"
-        app:tabMode="fixed"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
