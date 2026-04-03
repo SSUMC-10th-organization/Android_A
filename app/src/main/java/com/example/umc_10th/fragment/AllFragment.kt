@@ -110,6 +110,16 @@ class AllFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 위시리스트 저장소와 현재 리스트를 대조해서 하트 상태 최신화
+        purchaseList.forEach { product ->
+            product.isFavorite = MainActivity.wishlistStorage.isFavorite(product.name!!)
+        }
+        // 리사이클러뷰 새로고침
+        binding.purchaseRecyclerView.adapter?.notifyDataSetChanged()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
