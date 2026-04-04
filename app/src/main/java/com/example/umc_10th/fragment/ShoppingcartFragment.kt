@@ -1,21 +1,22 @@
-package com.example.umc_10th
+package com.example.umc_10th.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.umc_10th.databinding.FragmentPurchaseBinding
+import androidx.fragment.app.Fragment
+import com.example.umc_10th.MainActivity
+import com.example.umc_10th.databinding.FragmentShoppingcartBinding
 
-class PurchaseFragment : Fragment() {
-    private var _binding: FragmentPurchaseBinding? = null // 이름 주의!
+class ShoppingcartFragment : Fragment() {
+    private var _binding: FragmentShoppingcartBinding? = null // 이름 주의!
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentPurchaseBinding.inflate(inflater, container, false)
+        _binding = FragmentShoppingcartBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

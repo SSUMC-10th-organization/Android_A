@@ -16,6 +16,19 @@
         android:src="@drawable/socks1" />
 
 
+    <ImageView
+        android:id="@+id/product_heart_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/white_circle_bg"
+        android:padding="6dp"
+        android:src="@drawable/ic_favorite_border"
+        app:layout_constraintEnd_toEndOf="@id/product_image"
+        app:layout_constraintTop_toTopOf="@id/product_image" />
+
+
     <TextView
         android:id="@+id/product_name"
         android:layout_width="0dp"
