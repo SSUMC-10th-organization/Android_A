@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.umc_10th.R
 import com.example.umc_10th.databinding.PurchaseFragmentBinding
 
 class PurchaseFragment: Fragment() {

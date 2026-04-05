@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui
 
 data class ProductData (
     val img: Int = 0,
