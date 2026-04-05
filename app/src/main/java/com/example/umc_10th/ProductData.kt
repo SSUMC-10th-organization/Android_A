@@ -2,6 +2,7 @@ package com.example.umc_10th
 
 
 data class ProductData (
+    val id: Int,
     val imageResId: Int,
     val name: String,
     val category: String,

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.umc_10th.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -14,6 +16,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var homeProductAdapter: HomeProductAdapter
+    private lateinit var productDataStore: ProductDataStore
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,9 +30,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val homeProductList = ProductSampleRepository.productList.takeLast(2).toMutableList()
-
-        homeProductAdapter = HomeProductAdapter(homeProductList)
+        productDataStore = ProductDataStore(requireContext())
+        homeProductAdapter = HomeProductAdapter(mutableListOf())
 
         binding.rvHomeProduct.apply {
             adapter = homeProductAdapter
@@ -38,6 +40,15 @@ class HomeFragment : Fragment() {
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            productDataStore.initializeIfEmpty()
+
+            productDataStore.getProductsFlow().collect { productList ->
+                val latestProducts = productList.takeLast(2)
+                homeProductAdapter.submitList(latestProducts)
+            }
         }
     }
 

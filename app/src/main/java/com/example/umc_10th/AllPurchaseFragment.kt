@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.umc_10th.databinding.FragmentWishlistBinding
+import com.example.umc_10th.databinding.FragmentAllPurchaseBinding
 import kotlinx.coroutines.launch
 
-class WishlistFragment : Fragment() {
+class AllPurchaseFragment : Fragment() {
 
-    private var _binding: FragmentWishlistBinding? = null
+    private var _binding: FragmentAllPurchaseBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var productAdapter: ProductAdapter
@@ -22,7 +22,7 @@ class WishlistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentWishlistBinding.inflate(inflater, container, false)
+        _binding = FragmentAllPurchaseBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,15 +40,13 @@ class WishlistFragment : Fragment() {
             }
         )
 
-        binding.rvWishlist.adapter = productAdapter
-        binding.rvWishlist.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.rvProduct.adapter = productAdapter
+        binding.rvProduct.layoutManager = GridLayoutManager(requireContext(), 2)
 
         viewLifecycleOwner.lifecycleScope.launch {
             productDataStore.initializeIfEmpty()
-
             productDataStore.getProductsFlow().collect { productList ->
-                val wishlist = productList.filter { it.isLiked }
-                productAdapter.submitList(wishlist)
+                productAdapter.submitList(productList)
             }
         }
     }

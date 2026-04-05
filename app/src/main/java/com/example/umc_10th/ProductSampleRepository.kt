@@ -4,6 +4,7 @@ object ProductSampleRepository {
 
     val productList = mutableListOf(
         ProductData(
+            id=1,
             imageResId = R.drawable.ic_purchase_item1,
             name = "Nike Everyday Plus Cushioned",
             category = "Training Ankle Socks (6 Pairs)",
@@ -13,6 +14,7 @@ object ProductSampleRepository {
             isBestSeller = false
         ),
         ProductData(
+            id=2,
             imageResId = R.drawable.ic_purchase_item2,
             name = "Nike Air Force 1 '07",
             category = "Women's Shoes",
@@ -22,6 +24,7 @@ object ProductSampleRepository {
             isBestSeller = true
         ),
         ProductData(
+            id=3,
             imageResId = R.drawable.ic_purchase_item3,
             name = "Nike Dunk Low",
             category = "Men's Shoes",
@@ -31,6 +34,7 @@ object ProductSampleRepository {
             isBestSeller = false
         ),
         ProductData(
+            id=4,
             imageResId = R.drawable.ic_purchase_item4,
             name = "Nike Motiva",
             category = "Women's Walking Shoes",
@@ -40,6 +44,7 @@ object ProductSampleRepository {
             isBestSeller = true
         ),
         ProductData(
+            id=5,
             imageResId = R.drawable.ic_home_item1,
             name = "Air Jordan XXXVI",
             category = "Women's Walking Shoes",
@@ -49,6 +54,7 @@ object ProductSampleRepository {
             isBestSeller = true
         ),
         ProductData(
+            id=6,
             imageResId = R.drawable.ic_home_item2,
             name = "Air Jordan XXXVI",
             category = "Women's Walking Shoes",
