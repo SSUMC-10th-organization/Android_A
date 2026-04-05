@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.umc_10th.DummyData
-import com.example.umc_10th.ProductAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.umc_10th.R
+import com.example.umc_10th.ShopPagerAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class ShopFragment : Fragment() {
 
@@ -26,10 +24,18 @@ class ShopFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tab Font 설정
         val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
-        val typeface = ResourcesCompat.getFont(requireContext(), R.font.noto_sans_regular)
+        val viewPager = view.findViewById<ViewPager2>(R.id.view_pager)
 
+        viewPager.adapter = ShopPagerAdapter(requireActivity())
+
+        val tabTitles = listOf("전체", "Tops & T-Shirts", "Sale")
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
+
+        // Tab Font 설정
+        val typeface = ResourcesCompat.getFont(requireContext(), R.font.noto_sans_regular)
         for (i in 0 until tabLayout.tabCount) {
             val tab = tabLayout.getTabAt(i)
             val tabView = tab?.view
@@ -40,27 +46,5 @@ class ShopFragment : Fragment() {
                 }
             }
         }
-
-        // RecyclerView 설정
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_products)
-        val products = DummyData.getProducts()
-
-        val adapter = ProductAdapter(
-            products = products,
-            onItemClick = { product ->
-                val intent = android.content.Intent(requireContext(), com.example.umc_10th.ProductDetailActivity::class.java).apply {
-                    putExtra("product_name", product.name)
-                    putExtra("product_description", product.description)
-                    putExtra("product_price", product.price)
-                    putExtra("product_image", product.imageRes)
-                    putExtra("product_favorite", product.isFavorite)
-                }
-                startActivity(intent)
-            },
-            onFavoriteClick = { product, position -> }
-        )
-
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        recyclerView.adapter = adapter
     }
 }

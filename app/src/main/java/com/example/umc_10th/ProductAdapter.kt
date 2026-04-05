@@ -68,4 +68,15 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int = products.size
+
+    fun updateProducts(newProducts: List<Product>) {
+        products.clear()
+        products.addAll(newProducts)
+        notifyDataSetChanged()
+    }
+
+    fun removeAt(position: Int) {
+        products.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
