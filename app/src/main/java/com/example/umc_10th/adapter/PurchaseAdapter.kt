@@ -36,7 +36,7 @@ class PurchaseAdapter(
                 product.isFavorite = !product.isFavorite
 
                 // 클릭된 아이템 하나만 다시 그리기 (이미지 변경)
-                notifyItemChanged(adapterPosition)
+                notifyItemChanged(bindingAdapterPosition)
 
                 // 프래그먼트로 '이 상품 찜 상태 변함' 알림 전달
                 onHeartClicked(product)
