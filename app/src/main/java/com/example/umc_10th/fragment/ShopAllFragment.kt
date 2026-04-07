@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class WishlistFragment : Fragment() {
+class ShopAllFragment : Fragment() {
 
     private lateinit var adapter: ProductAdapter
 
@@ -27,12 +27,12 @@ class WishlistFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_wishlist, container, false)
+    ): View = inflater.inflate(R.layout.fragment_shop_all, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_wishlist)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_products)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         adapter = ProductAdapter(
@@ -48,9 +48,7 @@ class WishlistFragment : Fragment() {
                 }
                 startActivity(intent)
             },
-            onFavoriteClick = { product, position ->
-                // 하트 해제 시 즉시 리스트에서 제거
-                adapter.removeAt(position)
+            onFavoriteClick = { product, _ ->
                 lifecycleScope.launch(Dispatchers.IO) {
                     updateProductFavorite(requireContext(), product.id, product.isFavorite)
                 }
@@ -61,10 +59,9 @@ class WishlistFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             initializeProductsIfEmpty(requireContext())
 
-            getProductsFlow(requireContext()).collect { allProducts ->
-                val wishlistProducts = allProducts.filter { it.isFavorite }
+            getProductsFlow(requireContext()).collect { products ->
                 withContext(Dispatchers.Main) {
-                    adapter.updateProducts(wishlistProducts)
+                    adapter.updateProducts(products)
                 }
             }
         }

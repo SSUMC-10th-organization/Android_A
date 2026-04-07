@@ -5,6 +5,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -13,6 +16,7 @@ class ProductDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product_detail)
 
         // Intent에서 데이터 받기
+        val productId = intent.getIntExtra("product_id", -1)
         val productName = intent.getStringExtra("product_name") ?: ""
         val productDescription = intent.getStringExtra("product_description") ?: ""
         val productPrice = intent.getStringExtra("product_price") ?: ""
@@ -48,6 +52,11 @@ class ProductDetailActivity : AppCompatActivity() {
         btnWishlist.setOnClickListener {
             isFavorite = !isFavorite
             updateFavoriteIcon(btnWishlist, isFavorite)
+            if (productId != -1) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    updateProductFavorite(applicationContext, productId, isFavorite)
+                }
+            }
         }
     }
 
