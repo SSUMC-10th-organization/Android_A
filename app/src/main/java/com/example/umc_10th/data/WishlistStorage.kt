@@ -9,48 +9,56 @@ import kotlinx.coroutines.flow.first
 
 class WishlistStorage(private val preferenceManager: SharedPreferenceManager) {
 
-    // 메모리 캐시 (화면에 바로 보여주기 위함)
+    // 1. 초기화 및 메모리 캐시
     private val gson = Gson()
     private val wishlist = mutableListOf<PurchaseProduct>()
+    //mutableListOf :앱이 켜져 있는 동안 데이터를 빠르게 꺼내 쓰기 위해 메모리에 들고 있는 캐시 리스트
 
-    // ⭐ 앱 시작 시 호출할 초기화 함수
     fun loadFromDataStore() {
+        //시작 시 저장소(Disk)에 있던 데이터를 메모리(wishlist)로 끌어올리는 함수
         CoroutineScope(Dispatchers.IO).launch {
-            // Flow에서 데이터를 한 번만 가져옵니다 (.first())
+            //파일 읽기는 시간이 걸리므로 UI 스레드가 아닌 입출력 전용 스레드에서 실행
             val type = object : TypeToken<List<PurchaseProduct>>() {}.type
             preferenceManager.getObjectList<PurchaseProduct>(
                 SharedPreferenceManager.KEY_WISHLIST,
                 type
             ).first().let { savedList ->
+                //.first() : 데이터 흐름(Flow)을 계속 관찰하지 않고, 딱 한 번만 현재 값을 가져올 때 사용
                 wishlist.clear()
                 wishlist.addAll(savedList)
             }
         }
     }
 
-    // 위시리스트 추가 (DataStore에도 저장)
+    //2. 데이터 추가 및 중복 검사
     fun addProduct(product: PurchaseProduct) {
+        //같은 이름의 상품이 이미 리스트에 있는지 검사하여 중복 추가를 방지
         if (!wishlist.any { it.name == product.name }) {
             wishlist.add(product)
-            saveToDataStore() // 변경사항 저장
+            saveToDataStore() // 변경사항 저장, 어플 재실행 시에도 유지되게 함
         }
     }
 
-    // 위시리스트 삭제 (DataStore에도 반영)
+    // 3. 데이터 삭제 및 상태 확인
     fun removeProduct(product: PurchaseProduct) {
         wishlist.removeAll { it.name == product.name }
-        saveToDataStore() // 변경사항 저장
+        //조건에 맞는 아이템을 리스트에서 제거
+        saveToDataStore()
+        // 변경사항 저장
     }
 
     fun getWishlist(): List<PurchaseProduct> = wishlist
 
     fun isFavorite(productName: String): Boolean {
+        //특정 상품이 현재 찜(하트 버튼 눌림) 상태인지 확인하는 함수
         return wishlist.any { it.name == productName }
     }
 
-    // ⭐ 핵심: 현재 메모리 리스트를 JSON으로 구워서 DataStore에 저장
+    // 4. 영구 저장 (Disk Write)
     private fun saveToDataStore() {
+        //현재 메모리에 있는 wishlist 전체를 DataStore에 덮어씌음
         CoroutineScope(Dispatchers.IO).launch {
+            //저장은 시간이 걸리는 작업이므로 launch를 통해 백그라운드에서 처리
             preferenceManager.saveObjectList(
                 SharedPreferenceManager.KEY_WISHLIST,
                 wishlist
