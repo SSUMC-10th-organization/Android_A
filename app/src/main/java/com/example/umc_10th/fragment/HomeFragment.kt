@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
         val type = object : TypeToken<List<Product>>() {}.type
 
         viewLifecycleOwner.lifecycleScope.launch {
-            // 1. DataStore에서 먼저 데이터를 읽어옵니다.
+            // 1. DataStore에서 먼저 데이터를 읽어옴
             val savedList = MainActivity.prefManager.getObjectList<Product>(
                 SharedPreferenceManager.KEY_HOME_PRODUCTS, type
             ).first()
@@ -67,10 +67,10 @@ class HomeFragment : Fragment() {
                 productList.addAll(savedList)
             }
 
-            // 4. [중요] 비동기 로딩이 끝났으므로 어댑터에 데이터 변경을 알립니다.
+            // 4. 비동기 로딩이 끝났으므로 어댑터에 데이터 변경 알림
             binding.productRecyclerView.adapter?.notifyDataSetChanged()
         }
-    } // <-- initDummyData 함수 끝
+    }
 
     private fun initRecyclerView() {
         val productAdapter = ProductAdapter(productList) { product ->

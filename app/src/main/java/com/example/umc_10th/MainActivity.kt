@@ -21,10 +21,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
+
+    //1. 전역 인스턴스 관리 (Companion Object)
     companion object {
         lateinit var wishlistStorage: WishlistStorage
         lateinit var prefManager: SharedPreferenceManager
     }
+    //앱 어디서든 접근할 수 있는 공용 저장소 인스턴스를 선언
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,30 +35,36 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 매니저와 스토리지 생성
+        // 2. 초기 설정 및 데이터 로드 (onCreate)
         prefManager = SharedPreferenceManager(this)
         wishlistStorage = WishlistStorage(prefManager)
-
         wishlistStorage.loadFromDataStore()
+        //객체 생성: 저장소 매니저와 관리자(Storage)를 메모리에 올림
+        //loadFromDataStore()를 호출
+        //이전에 저장된 위시리스트 데이터를 미리 불러옴 (탭 이동 시 딜레이 제거)
 
         setContentView(binding.root)
 
-// 1. [수정] 시작 화면도 반드시 main_frm에 넣어줘야 합니다!
-        if (savedInstanceState == null) { // 앱 처음 실행 시에만 프래그먼트 생성
+        //3. 화면 초기값 설정 (Fragment Transaction)
+        if (savedInstanceState == null) {
+        // 앱이 처음 실행될 때만 HomeFragment를 띄움. 화면 회전 시 프래그먼트가 중복 생성되는 것을 방지
             supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, HomeFragment()) // R.id.main -> R.id.main_frm
+                .replace(R.id.main_frm, HomeFragment())
+                //기존에 있던 화면을 떼어내고 HomeFragment로 교체
                 .commitAllowingStateLoss()
+
         }
 
-        // 2. 하단 탭 클릭 시 Fragment 전환 설정
+        // 4. 하단 탭 내비게이션 (BottomNavigationView)
         binding.mainBnv.setOnItemSelectedListener { item ->
+            //사용자가 하단 바의 아이콘을 클릭할 때 발생하는 이벤트
             when (item.itemId) {
-                // home_menu.xml에 적은 id와 아래 R.id.xxx 이름이 같아야 합니다!
+                // 클릭된 아이템의 ID에 맞춰 각각 다른 fragment를 main_frm(프레임 레이아웃) 자리에 끼워 넣음
                 R.id.homeFragment -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, HomeFragment())
                         .commitAllowingStateLoss()
-                    true
+                    true //선택됨 상태
                 }
                 R.id.purchaseFragment -> {
                     supportFragmentManager.beginTransaction()
@@ -87,6 +96,8 @@ class MainActivity : AppCompatActivity() {
 
         
     }
+
+    //5. 외부 제어 함수 (changeFragment)
     fun changeFragment(index: Int) {
         when (index) {
             3 -> { // '구매' 탭으로 이동하고 싶을 때 (index 1로 가정)
@@ -94,12 +105,12 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.main_frm, PurchaseFragment())
                     .commitAllowingStateLoss()
 
-                // 핵심: 하단 바의 아이콘도 '구매'로 변경 (ID는 본인의 menu/home_menu.xml 확인)
+                //selectedItemId를 직접 수정해서 하단 바의 선택된 아이콘 위치도 강제로 옮김
                 binding.mainBnv.selectedItemId = R.id.shoppingcartFragment
             }
-            // 필요하다면 다른 번호를 추가해서 다른 화면으로도 보낼 수 있어요!
         }
     }
+    //특정 프래그먼트 내부에서 버튼을 눌러 다른 탭으로 이동하고 싶을 때 사용
 
 
 }
