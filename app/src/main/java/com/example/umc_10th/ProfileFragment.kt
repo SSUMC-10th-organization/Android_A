@@ -1,59 +1,146 @@
 package com.example.umc_10th
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.umc_10th.databinding.FragmentProfileBinding
+import com.example.umc_10th.retrofit.ApiClient
+import com.example.umc_10th.retrofit.UserRepository
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
+
+    private val repository by lazy {
+        UserRepository(ApiClient.userService)
+    }
+
+    private lateinit var followingAdapter: FollowingAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initFollowingRecyclerView()
+        setCurrentJoinDate()
+        initClickListeners()
+        loadUserProfile()
+        loadUserList()
+    }
+
+    private fun loadUserProfile() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val result = repository.getUser(1)
+
+            result.onSuccess { user ->
+                binding.tvNickname.text = "${user.firstName} ${user.lastName}"
+
+                Glide.with(requireContext())
+                    .load(user.avatar)
+                    .into(binding.ivProfile)
+            }.onFailure { e ->
+                Log.e("ProfileFragment", "유저 정보 불러오기 실패", e)
+                Toast.makeText(
+                    requireContext(),
+                    "유저 정보 불러오기 실패: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    private fun initFollowingRecyclerView() {
+        followingAdapter = FollowingAdapter(mutableListOf())
+
+        binding.rvFollowing.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        binding.rvFollowing.adapter = followingAdapter
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun loadUserList() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val result = repository.getUserList(1)
+
+            result.onSuccess { userList ->
+                val followingList = userList.take(3).map { user ->
+                    FollowingItem(imageUrl = user.avatar)
                 }
+
+                followingAdapter.submitList(followingList)
+                binding.tvFollowingTitle.text = "팔로잉 (${followingList.size})"
+            }.onFailure { e ->
+                Log.e("ProfileFragment", "유저 리스트 불러오기 실패", e)
+                Toast.makeText(
+                    requireContext(),
+                    "유저 리스트 불러오기 실패: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+        }
+    }
+
+    private fun setCurrentJoinDate() {
+        val currentDate = SimpleDateFormat("yyyy년 M월", Locale.KOREA).format(Date())
+        binding.tvJoinDate.text = "회원 가입일 : $currentDate"
+    }
+
+    private fun initClickListeners() {
+        binding.btnEditProfile.setOnClickListener {
+            Toast.makeText(requireContext(), "프로필 수정 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnOrder.setOnClickListener {
+            Toast.makeText(requireContext(), "주문 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnPass.setOnClickListener {
+            Toast.makeText(requireContext(), "패스 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnEvent.setOnClickListener {
+            Toast.makeText(requireContext(), "이벤트 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnSetting.setOnClickListener {
+            Toast.makeText(requireContext(), "설정 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnMemberBenefit.setOnClickListener {
+            Toast.makeText(requireContext(), "나이키 멤버 혜택 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnArrow.setOnClickListener {
+            Toast.makeText(requireContext(), "화살표 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnEditFollowing.setOnClickListener {
+            Toast.makeText(requireContext(), "편집 클릭", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
