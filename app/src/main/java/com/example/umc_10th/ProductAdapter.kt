@@ -50,4 +50,10 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int = productList.size
+
+    fun submitList(newList: List<ProductData>) {
+        productList.clear()
+        productList.addAll(newList)
+        notifyDataSetChanged()
+    }
 }
