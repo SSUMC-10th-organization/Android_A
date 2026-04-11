@@ -8,39 +8,39 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.umc_10th.databinding.ActivityMainBinding
 import com.example.umc_10th.fragment.CartFragment
 import com.example.umc_10th.fragment.HomeFragment
 import com.example.umc_10th.fragment.ProfileFragment
 import com.example.umc_10th.fragment.ShopFragment
 import com.example.umc_10th.fragment.WishlistFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNav: BottomNavigationView  // 추가
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragment_container)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentContainer) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(0, systemBars.top, 0, 0)
             insets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.bottom_nav)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(0, 0, 0, systemBars.bottom)
             insets
         }
 
-        bottomNav = findViewById(R.id.bottom_nav)  // val -> 필드로 변경
         val typeface = ResourcesCompat.getFont(this, R.font.noto_sans_regular)
 
-        for (i in 0 until bottomNav.menu.size()) {
-            val menuView = bottomNav.getChildAt(0) as ViewGroup
+        for (i in 0 until binding.bottomNav.menu.size()) {
+            val menuView = binding.bottomNav.getChildAt(0) as ViewGroup
             val itemView = menuView.getChildAt(i) as ViewGroup
             for (j in 0 until itemView.childCount) {
                 val view = itemView.getChildAt(j)
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_container, HomeFragment())
             .commit()
 
-        bottomNav.setOnItemSelectedListener { item ->
+        binding.bottomNav.setOnItemSelectedListener { item ->
             val fragment = when (item.itemId) {
                 R.id.nav_home       -> HomeFragment()
                 R.id.nav_shop       -> ShopFragment()
@@ -70,8 +70,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 추가
     fun navigateToShop() {
-        bottomNav.selectedItemId = R.id.nav_shop
+        binding.bottomNav.selectedItemId = R.id.nav_shop
     }
 }

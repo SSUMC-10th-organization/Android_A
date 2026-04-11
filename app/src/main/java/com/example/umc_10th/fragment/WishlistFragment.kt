@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_10th.ProductAdapter
 import com.example.umc_10th.ProductDetailActivity
-import com.example.umc_10th.R
+import com.example.umc_10th.databinding.FragmentWishlistBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
 import com.example.umc_10th.updateProductFavorite
@@ -21,19 +20,24 @@ import kotlinx.coroutines.withContext
 
 class WishlistFragment : Fragment() {
 
+    private var _binding: FragmentWishlistBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_wishlist, container, false)
+    ): View {
+        _binding = FragmentWishlistBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_wishlist)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.rvWishlist.layoutManager = GridLayoutManager(requireContext(), 2)
 
         adapter = ProductAdapter(
             products = mutableListOf(),
@@ -56,7 +60,7 @@ class WishlistFragment : Fragment() {
                 }
             }
         )
-        recyclerView.adapter = adapter
+        binding.rvWishlist.adapter = adapter
 
         lifecycleScope.launch(Dispatchers.IO) {
             initializeProductsIfEmpty(requireContext())
@@ -68,5 +72,10 @@ class WishlistFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

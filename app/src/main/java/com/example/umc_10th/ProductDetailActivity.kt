@@ -1,19 +1,20 @@
 package com.example.umc_10th
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.umc_10th.databinding.ActivityProductDetailBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityProductDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_detail)
+        binding = ActivityProductDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Intent에서 데이터 받기
         val productId = intent.getIntExtra("product_id", -1)
@@ -23,35 +24,25 @@ class ProductDetailActivity : AppCompatActivity() {
         val productImageRes = intent.getIntExtra("product_image", 0)
         var isFavorite = intent.getBooleanExtra("product_favorite", false)
 
-        // 뷰 연결
-        val ivBack = findViewById<ImageView>(R.id.iv_back)
-        val tvToolbarTitle = findViewById<TextView>(R.id.tv_toolbar_title)
-        val ivProduct = findViewById<ImageView>(R.id.iv_detail_product)
-        val tvName = findViewById<TextView>(R.id.tv_detail_name)
-        val tvDescription = findViewById<TextView>(R.id.tv_detail_description)
-        val tvPrice = findViewById<TextView>(R.id.tv_detail_price)
-        val btnAddToCart = findViewById<Button>(R.id.btn_add_to_cart)
-        val btnWishlist = findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_wishlist)
-
         // 데이터 세팅
-        tvToolbarTitle.text = productName
-        ivProduct.setImageResource(productImageRes)
-        tvName.text = productName
-        tvDescription.text = productDescription
-        tvPrice.text = productPrice
-        updateFavoriteIcon(btnWishlist, isFavorite)
+        binding.tvToolbarTitle.text = productName
+        binding.ivDetailProduct.setImageResource(productImageRes)
+        binding.tvDetailName.text = productName
+        binding.tvDetailDescription.text = productDescription
+        binding.tvDetailPrice.text = productPrice
+        updateFavoriteIcon(isFavorite)
 
         // 뒤로가기
-        ivBack.setOnClickListener { finish() }
+        binding.ivBack.setOnClickListener { finish() }
 
         // 장바구니 추가
-        btnAddToCart.setOnClickListener {
+        binding.btnAddToCart.setOnClickListener {
         }
 
         // 위시리스트 토글
-        btnWishlist.setOnClickListener {
+        binding.btnWishlist.setOnClickListener {
             isFavorite = !isFavorite
-            updateFavoriteIcon(btnWishlist, isFavorite)
+            updateFavoriteIcon(isFavorite)
             if (productId != -1) {
                 lifecycleScope.launch(Dispatchers.IO) {
                     updateProductFavorite(applicationContext, productId, isFavorite)
@@ -60,8 +51,8 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateFavoriteIcon(btn: com.google.android.material.button.MaterialButton, isFavorite: Boolean) {
-        btn.setIconResource(
+    private fun updateFavoriteIcon(isFavorite: Boolean) {
+        binding.btnWishlist.setIconResource(
             if (isFavorite) R.drawable.ic_heart_filled
             else R.drawable.ic_heart_empty
         )

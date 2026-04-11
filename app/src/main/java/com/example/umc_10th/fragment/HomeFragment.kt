@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_10th.HomeProductAdapter
 import com.example.umc_10th.ProductDetailActivity
-import com.example.umc_10th.R
+import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
 import kotlinx.coroutines.Dispatchers
@@ -20,17 +19,22 @@ import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_home_products)
-        recyclerView.layoutManager = LinearLayoutManager(
+        binding.rvHomeProducts.layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.HORIZONTAL,
             false
@@ -47,7 +51,7 @@ class HomeFragment : Fragment() {
                 ).filterNotNull()
 
                 withContext(Dispatchers.Main) {
-                    recyclerView.adapter = HomeProductAdapter(homeProducts) { product ->
+                    binding.rvHomeProducts.adapter = HomeProductAdapter(homeProducts) { product ->
                         val intent = Intent(requireContext(), ProductDetailActivity::class.java).apply {
                             putExtra("product_id", product.id)
                             putExtra("product_name", product.name)
@@ -61,5 +65,10 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
