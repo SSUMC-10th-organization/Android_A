@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.umc_10th.R
-import com.example.umc_10th.ShopPagerAdapter
+import com.example.umc_10th.adapter.ShopPagerAdapter
 import com.example.umc_10th.databinding.FragmentShopBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
