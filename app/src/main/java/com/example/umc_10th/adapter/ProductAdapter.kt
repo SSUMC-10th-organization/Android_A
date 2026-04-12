@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.umc_10th.Product
+import com.example.umc_10th.R
 
 class ProductAdapter(
     private val products: MutableList<Product>,

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.umc_10th.HomeProductAdapter
+import com.example.umc_10th.adapter.HomeProductAdapter
 import com.example.umc_10th.ProductDetailActivity
 import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.getProductsFlow

@@ -301,46 +301,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- 팔로잉 이미지 가로 스크롤 -->
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_following"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
+                android:layout_height="106dp"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:clipToPadding="false">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="106dp"
-                        android:layout_height="106dp"
-                        android:background="#D9D9D9"
-                        android:layout_marginEnd="6dp"/>
-
-                    <View
-                        android:layout_width="106dp"
-                        android:layout_height="106dp"
-                        android:background="#D9D9D9"
-                        android:layout_marginEnd="6dp"/>
-
-                    <View
-                        android:layout_width="106dp"
-                        android:layout_height="106dp"
-                        android:background="#D9D9D9"
-                        android:layout_marginEnd="6dp"/>
-
-                    <View
-                        android:layout_width="106dp"
-                        android:layout_height="106dp"
-                        android:background="#D9D9D9"
-                        android:layout_marginEnd="6dp"/>
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

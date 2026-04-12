@@ -6,6 +6,10 @@ data class UserResponse(
     val data: UserData
 )
 
+data class UserListResponse(
+    val data: List<UserData>
+)
+
 data class UserData(
     val id: Int,
     val email: String,
