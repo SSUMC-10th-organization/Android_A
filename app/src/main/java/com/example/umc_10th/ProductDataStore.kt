@@ -28,7 +28,13 @@ fun getProductsFlow(context: Context): Flow<List<Product>> {
     return context.productDataStore.data.map { prefs ->
         val jsonString = prefs[PRODUCTS_JSON_KEY] ?: return@map emptyList()
         val type = object : TypeToken<List<Product>>() {}.type
-        gson.fromJson(jsonString, type) ?: emptyList()
+        val products: List<Product> = gson.fromJson(jsonString, type) ?: emptyList()
+        products.map { product ->
+            val resId = context.resources.getIdentifier(
+                "img_product_${product.id}", "drawable", context.packageName
+            )
+            if (resId != 0) product.copy(imageRes = resId) else product
+        }
     }
 }
 
