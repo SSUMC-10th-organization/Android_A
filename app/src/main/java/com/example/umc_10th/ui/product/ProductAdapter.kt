@@ -1,9 +1,9 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.product
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.umc_10th.data.Product
+import com.example.umc_10th.data.model.Product
 import com.example.umc_10th.databinding.ItemHomeBinding
 
 //1. 클래스 선언 및 생성자

@@ -1,22 +1,25 @@
-package com.example.umc_10th.fragment
+package com.example.umc_10th.ui.profile
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.umc_10th.R
-import com.example.umc_10th.adapter.ProfileAdapter
-import com.example.umc_10th.data.UserListResponse
+import com.example.umc_10th.data.model.UserListResponse
+import com.example.umc_10th.data.model.UserResponse
 import com.example.umc_10th.data.remote.ReqResInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.umc_10th.data.UserResponse
 
 class ProfileFragment : Fragment() {
 
@@ -36,10 +39,10 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // XML에 정의된 rv_following을 찾아 어댑터와 연결
-        val recyclerView = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rv_following)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rv_following)
         profileAdapter = ProfileAdapter(listOf()) // 초기 빈 리스트
         recyclerView.adapter = profileAdapter
-        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext(),
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL, false)
 
         //서버 데이터 요청 함수 호출
@@ -87,14 +90,14 @@ class ProfileFragment : Fragment() {
                             // 1. 상단 닉네임 변경 (First + Last Name)
                             // binding 사용 시: binding.tvNickname.text = "${it.first_name} ${it.last_name}"
                             // findViewById 사용 시 예시:
-                            val nameTextView = view?.findViewById<android.widget.TextView>(R.id.tv_main_nickname)
+                            val nameTextView = view?.findViewById<TextView>(R.id.tv_main_nickname)
                             nameTextView?.text = "${it.first_name} ${it.last_name}"
                             //서버에서 준 이름과 성을 합쳐서 닉네임 텍스트뷰에 추가
 
                             // 2. 상단 메인 프로필 이미지 변경 (Glide 활용)
-                            val profileImageView = view?.findViewById<android.widget.ImageView>(R.id.iv_main_profile)
+                            val profileImageView = view?.findViewById<ImageView>(R.id.iv_main_profile)
                             if (profileImageView != null) {
-                                com.bumptech.glide.Glide.with(requireContext())
+                                Glide.with(requireContext())
                                     .load(it.avatar)
                                     .circleCrop()
                                     .into(profileImageView)
@@ -117,7 +120,3 @@ class ProfileFragment : Fragment() {
         }
     }
 }
-
-// * 통신이 enqueue를 통해 비동기적으로 일어나므로 데이터가 로드되기 전까지는 빈 화면 출력
-/* * Glide.with(requireContext())처럼 fragment에서
-     Context가 필요할 때는 안전하게 requireContext()를 사용한다는 점이 중요 */

@@ -1,4 +1,4 @@
-package com.example.umc_10th.fragment
+package com.example.umc_10th.ui.wishlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.umc_10th.MainActivity
-import com.example.umc_10th.adapter.WishlistAdapter
-import com.example.umc_10th.data.WishlistStorage
 import com.example.umc_10th.databinding.FragmentWishlistBinding
+import com.example.umc_10th.ui.main.MainActivity
 
 class WishlistFragment : Fragment() {
 
@@ -35,14 +33,14 @@ class WishlistFragment : Fragment() {
 
     private fun initRecyclerView() {
         // 1. WishlistStorage에서 데이터 가져오기
-        val wishlistData = MainActivity.wishlistStorage.getWishlist().toMutableList()
+        val wishlistData = MainActivity.Companion.wishlistStorage.getWishlist().toMutableList()
 
         // 2. 어댑터 생성 시 클릭 리스너(삭제 로직) 전달
         val wishlistAdapter = WishlistAdapter(
             itemList = wishlistData,
             onHeartClicked = { product ->
                 // 🛑 [핵심] 저장소에서 삭제
-                MainActivity.wishlistStorage.removeProduct(product)
+                MainActivity.Companion.wishlistStorage.removeProduct(product)
 
                 // 🔄 [핵심] 현재 위시리스트 화면에서 즉시 제거 및 갱신
                 wishlistData.remove(product)

@@ -1,10 +1,10 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.wishlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_10th.R
-import com.example.umc_10th.data.PurchaseProduct
+import com.example.umc_10th.data.model.PurchaseProduct
 import com.example.umc_10th.databinding.ItemWishlistBinding
 
 //1. 생성자와 매개변수

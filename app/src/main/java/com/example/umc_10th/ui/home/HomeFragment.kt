@@ -1,4 +1,4 @@
-package com.example.umc_10th.fragment
+package com.example.umc_10th.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.umc_10th.MainActivity
-import com.example.umc_10th.data.Product
-import com.example.umc_10th.adapter.ProductAdapter
 import com.example.umc_10th.R
-import com.example.umc_10th.data.SharedPreferenceManager
+import com.example.umc_10th.data.local.SharedPreferenceManager
+import com.example.umc_10th.data.model.Product
 import com.example.umc_10th.databinding.FragmentHomeBinding
+import com.example.umc_10th.ui.main.MainActivity
+import com.example.umc_10th.ui.product.ProductAdapter
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -44,8 +44,8 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             // 1. DataStore에서 먼저 데이터를 읽어옴
-            val savedList = MainActivity.prefManager.getObjectList<Product>(
-                SharedPreferenceManager.KEY_HOME_PRODUCTS, type
+            val savedList = MainActivity.Companion.prefManager.getObjectList<Product>(
+                SharedPreferenceManager.Companion.KEY_HOME_PRODUCTS, type
             ).first()
 
             if (savedList.isEmpty()) {
@@ -57,8 +57,8 @@ class HomeFragment : Fragment() {
                 productList.clear()
                 productList.addAll(dummy)
 
-                MainActivity.prefManager.saveObjectList(
-                    SharedPreferenceManager.KEY_HOME_PRODUCTS,
+                MainActivity.Companion.prefManager.saveObjectList(
+                    SharedPreferenceManager.Companion.KEY_HOME_PRODUCTS,
                     dummy
                 )
             } else {

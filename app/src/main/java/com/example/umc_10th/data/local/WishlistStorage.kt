@@ -1,5 +1,6 @@
-package com.example.umc_10th.data
+package com.example.umc_10th.data.local
 
+import com.example.umc_10th.data.model.PurchaseProduct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

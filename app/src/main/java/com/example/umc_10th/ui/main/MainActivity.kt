@@ -1,24 +1,17 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.umc_10th.adapter.ProfileAdapter
-import com.example.umc_10th.data.WishlistStorage
+import com.example.umc_10th.R
+import com.example.umc_10th.data.local.SharedPreferenceManager
+import com.example.umc_10th.data.local.WishlistStorage
 import com.example.umc_10th.databinding.ActivityHomeBinding
-import com.example.umc_10th.fragment.HomeFragment
-import com.example.umc_10th.fragment.ProfileFragment
-import com.example.umc_10th.fragment.PurchaseFragment
-import com.example.umc_10th.fragment.ShoppingcartFragment
-import com.example.umc_10th.fragment.WishlistFragment
-import com.example.umc_10th.data.SharedPreferenceManager
-import com.example.umc_10th.data.UserListResponse
-import com.example.umc_10th.data.remote.ReqResInterface
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.umc_10th.ui.home.HomeFragment
+import com.example.umc_10th.ui.profile.ProfileFragment
+import com.example.umc_10th.ui.purchase.PurchaseFragment
+import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
+import com.example.umc_10th.ui.wishlist.WishlistFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 class MainActivity : AppCompatActivity() {
 
@@ -94,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        
+
     }
 
     //5. 외부 제어 함수 (changeFragment)

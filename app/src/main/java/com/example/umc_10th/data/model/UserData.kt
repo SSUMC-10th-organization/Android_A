@@ -1,4 +1,4 @@
-package com.example.umc_10th.data
+package com.example.umc_10th.data.model
 
 // 1. 단일 유저 응답을 위한 클래스
 data class UserResponse(

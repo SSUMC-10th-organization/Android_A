@@ -1,7 +1,7 @@
 package com.example.umc_10th.data.remote
 
-import com.example.umc_10th.data.UserListResponse
-import com.example.umc_10th.data.UserResponse
+import com.example.umc_10th.data.model.UserListResponse
+import com.example.umc_10th.data.model.UserResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

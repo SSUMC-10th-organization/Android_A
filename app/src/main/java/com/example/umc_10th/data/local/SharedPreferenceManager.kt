@@ -1,13 +1,14 @@
-package com.example.umc_10th.data
+package com.example.umc_10th.data.local
 
 import android.content.Context
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.lang.reflect.Type
 
 // 1. DataStore 선언 및 초기화
 val Context.dataStore by preferencesDataStore(name = "user_prefs")
@@ -26,7 +27,7 @@ class SharedPreferenceManager(private val context: Context) {
     }
 
     // 3. 데이터 저장 로직 (Serialization)
-    suspend fun <T> saveObjectList(key: androidx.datastore.preferences.core.Preferences.Key<String>, list: List<T>) {
+    suspend fun <T> saveObjectList(key: Preferences.Key<String>, list: List<T>) {
         //suspend : 이 함수는 비동기로 작동하므로 코루틴 안에서 실행되어야 함을 의미
         //(데이터를 파일에 쓰는 동안 UI가 멈추지 않게 함)
 
@@ -40,7 +41,7 @@ class SharedPreferenceManager(private val context: Context) {
     }
 
     // 4. 데이터 불러오기 로직 (Deserialization)
-    fun <T> getObjectList(key: androidx.datastore.preferences.core.Preferences.Key<String>, typeToken: java.lang.reflect.Type): Flow<List<T>> {
+    fun <T> getObjectList(key: Preferences.Key<String>, typeToken: Type): Flow<List<T>> {
         //Flow<List<T>> : 데이터가 바뀔 때마다 실시간으로 관찰할 수 있는 흐름(Stream)을 반환
         return context.dataStore.data.map { preferences ->
             //.map{} : 저장소에서 읽어온 원본 데이터를 가공
