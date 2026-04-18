@@ -63,52 +63,52 @@ class AllFragment : Fragment() {
                 //저장된 게 없다면 새로 만들기
                 val dummy = mutableListOf(
                     PurchaseProduct(
-                        R.drawable.socks1,
-                        "Nike Everyday Plus\nCushioned",
-                        "Training Ankle Socks (6 Pairs)\n5 Colours",
-                        "US$20"
+                        imageRes = R.drawable.socks1,
+                        name = "Nike Everyday Plus\nCushioned",
+                        explain = "Training Ankle Socks (6 Pairs)\n5 Colours",
+                        price = "US$20"
                     ),
                     PurchaseProduct(
-                        R.drawable.socks2,
-                        "Nike Elite Crew",
-                        "Basketball Crew Socks\n3 Colours",
-                        "US$160"
+                        imageRes = R.drawable.socks2,
+                        name = "Nike Elite Crew",
+                        explain = "Basketball Crew Socks\n3 Colours",
+                        price = "US$160"
                     ),
                     PurchaseProduct(
-                        R.drawable.women_shoes,
-                        "Nike Air Force 1 '07",
-                        "Classic Design",
-                        "US$115"
+                        imageRes =R.drawable.women_shoes,
+                        name =  "Nike Air Force 1 '07",
+                        explain = "Classic Design",
+                        price = "US$115"
                     ),
                     PurchaseProduct(
-                        R.drawable.men_shoes,
-                        "Jordan Essentials",
-                        "Comfortable Fit",
-                        "US$35"
+                        imageRes =R.drawable.men_shoes,
+                        name =  "Jordan Essentials",
+                        explain = "Comfortable Fit",
+                        price = "US$35"
                     ),
                     PurchaseProduct(
-                        R.drawable.socks1,
-                        "Nike Spark Lightweight",
-                        "Breathable Fabric",
-                        "US$18"
+                        imageRes =R.drawable.socks1,
+                        name = "Nike Spark Lightweight",
+                        explain = "Breathable Fabric",
+                        price = "US$18"
                     ),
                     PurchaseProduct(
-                        R.drawable.socks2,
-                        "Nike Multiplier",
-                        "Performance Socks",
-                        "US$22"
+                        imageRes =R.drawable.socks2,
+                        name = "Nike Multiplier",
+                        explain = "Performance Socks",
+                        price = "US$22"
                     ),
                     PurchaseProduct(
-                        R.drawable.women_shoes,
-                        "Nike Air Max Pro",
-                        "Air Cushioning",
-                        "US$180"
+                        imageRes =R.drawable.women_shoes,
+                        name = "Nike Air Max Pro",
+                        explain = "Air Cushioning",
+                        price = "US$180"
                     ),
                     PurchaseProduct(
-                        R.drawable.men_shoes,
-                        "Nike Pegasus 40",
-                        "Running Shoes",
-                        "US$130"
+                        imageRes =R.drawable.men_shoes,
+                        name = "Nike Pegasus 40",
+                        explain = "Running Shoes",
+                        price = "US$130"
                     )
                 )
 

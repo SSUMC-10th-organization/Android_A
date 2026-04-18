@@ -14,9 +14,10 @@ import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.ui.main.MainActivity
 import com.example.umc_10th.ui.product.ProductAdapter
 import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -51,8 +52,8 @@ class HomeFragment : Fragment() {
             if (savedList.isEmpty()) {
                 // 2. 데이터가 없으면 더미 데이터 생성 및 저장
                 val dummy = mutableListOf(
-                    Product(R.drawable.shoes1, "Air Jordan XXXVI", "US$185"),
-                    Product(R.drawable.shoes2, "Nike Air Force 1 '07", "US$115")
+                    Product(imageRes = R.drawable.shoes1, name = "Air Jordan XXXVI", price = "US$185"),
+                    Product(imageRes = R.drawable.shoes2, name = "Nike Air Force 1 '07", price = "US$115")
                 )
                 productList.clear()
                 productList.addAll(dummy)

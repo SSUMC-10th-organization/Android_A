@@ -22,6 +22,7 @@ class SharedPreferenceManager(private val context: Context) {
         val KEY_HOME_PRODUCTS = stringPreferencesKey("home_products")
         val KEY_PURCHASE_PRODUCTS = stringPreferencesKey("purchase_products")
         val KEY_WISHLIST = stringPreferencesKey("wishlist_items")
+        val KEY_USER_LIST = stringPreferencesKey("user_list")
         //저장된 데이터를 찾기 위한 이름표(Key)를 정의
         //stringPreferencesKey를 사용해 타입이 안전한(Type-safe) 키를 미리 만들어 둠
     }

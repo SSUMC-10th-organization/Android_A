@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.umc_10th.databinding.FragmentWishlistBinding
 import com.example.umc_10th.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
     // 1. ViewBinding 설정

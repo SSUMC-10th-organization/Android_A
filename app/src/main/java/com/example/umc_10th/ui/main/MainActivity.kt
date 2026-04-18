@@ -12,7 +12,7 @@ import com.example.umc_10th.ui.purchase.PurchaseFragment
 import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
 import com.example.umc_10th.ui.wishlist.WishlistFragment
 import dagger.hilt.android.AndroidEntryPoint
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     //1. 전역 인스턴스 관리 (Companion Object)
