@@ -1,26 +1,27 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.umc_10th.adapter.ProfileAdapter
-import com.example.umc_10th.data.WishlistStorage
+import com.example.umc_10th.R
+import com.example.umc_10th.data.local.SharedPreferenceManager
+import com.example.umc_10th.data.local.WishlistStorage
 import com.example.umc_10th.databinding.ActivityHomeBinding
-import com.example.umc_10th.fragment.HomeFragment
-import com.example.umc_10th.fragment.ProfileFragment
-import com.example.umc_10th.fragment.PurchaseFragment
-import com.example.umc_10th.fragment.ShoppingcartFragment
-import com.example.umc_10th.fragment.WishlistFragment
-import com.example.umc_10th.data.SharedPreferenceManager
-import com.example.umc_10th.data.UserListResponse
-import com.example.umc_10th.data.remote.ReqResInterface
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.umc_10th.ui.home.HomeFragment
+import com.example.umc_10th.ui.profile.ProfileFragment
+import com.example.umc_10th.ui.purchase.PurchaseFragment
+import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
+import com.example.umc_10th.ui.wishlist.WishlistFragment
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var hiltPrefManager: SharedPreferenceManager
+
+    @Inject
+    lateinit var hiltWishlistStorage: WishlistStorage
 
     //1. 전역 인스턴스 관리 (Companion Object)
     companion object {
@@ -32,17 +33,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        prefManager = hiltPrefManager
+        wishlistStorage = hiltWishlistStorage
 
         // 2. 초기 설정 및 데이터 로드 (onCreate)
-        prefManager = SharedPreferenceManager(this)
-        wishlistStorage = WishlistStorage(prefManager)
         wishlistStorage.loadFromDataStore()
         //객체 생성: 저장소 매니저와 관리자(Storage)를 메모리에 올림
         //loadFromDataStore()를 호출
         //이전에 저장된 위시리스트 데이터를 미리 불러옴 (탭 이동 시 딜레이 제거)
 
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //3. 화면 초기값 설정 (Fragment Transaction)
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        
+
     }
 
     //5. 외부 제어 함수 (changeFragment)

@@ -1,15 +1,15 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.purchase
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.umc_10th.data.PurchaseProduct
 import com.example.umc_10th.R
+import com.example.umc_10th.data.model.PurchaseProduct
 import com.example.umc_10th.databinding.ItemPurchaseBinding
 
 //1. 확장된 생성자와 콜백 함수
 class PurchaseAdapter(
-    private val itemList: MutableList<PurchaseProduct>,
+    private var itemList: MutableList<PurchaseProduct>,
     //찜 상태(isFavorite)를 내부에서 변경해야 하므로, 데이터 수정이 가능한 리스트 타입(MutableList) 선언
     private val onItemClicked: (PurchaseProduct) -> Unit,
     // 아이템 전체 클릭 이벤트
@@ -60,6 +60,11 @@ class PurchaseAdapter(
             parent, false
         )
         return PurchaseViewHolder(binding)
+    }
+
+    fun updateList(newList: List<PurchaseProduct>) {
+        this.itemList = newList.toMutableList() // itemList 변수명에 맞게 수정
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: PurchaseViewHolder, position: Int) {

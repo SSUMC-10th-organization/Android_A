@@ -1,10 +1,10 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.wishlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_10th.R
-import com.example.umc_10th.data.PurchaseProduct
+import com.example.umc_10th.data.model.PurchaseProduct
 import com.example.umc_10th.databinding.ItemWishlistBinding
 
 //1. 생성자와 매개변수
@@ -50,4 +50,15 @@ class WishlistAdapter(
     }
 
     override fun getItemCount(): Int = itemList.size
+
+    fun updateList(newList: List<PurchaseProduct>) {
+        // 1. 기존 리스트(itemList)의 모든 데이터를 비웁니다.
+        itemList.clear()
+
+        // 2. 전달받은 최신 리스트의 모든 데이터를 추가합니다.
+        itemList.addAll(newList)
+
+        // 3. 데이터가 변경되었음을 어댑터에 알려 리사이클러뷰를 다시 그리게 합니다.
+        notifyDataSetChanged()
+    }
 }

@@ -1,4 +1,7 @@
-package com.example.umc_10th.data
+package com.example.umc_10th.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 // 1. 단일 유저 응답을 위한 클래스
 data class UserResponse(
@@ -15,8 +18,9 @@ data class UserListResponse(
 )
 
 // 3. 공통 유저 데이터
+@Entity(tableName = "user_table")
 data class UserData(
-    val id: Int,
+    @PrimaryKey val id: Int,
     val email: String,
     val first_name: String,
     val last_name: String,

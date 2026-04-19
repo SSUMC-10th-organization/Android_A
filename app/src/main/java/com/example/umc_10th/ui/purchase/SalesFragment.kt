@@ -1,4 +1,4 @@
-package com.example.umc_10th.fragment
+package com.example.umc_10th.ui.purchase
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.umc_10th.R
 
-class TopsTshirtsFragment : Fragment() {
+class SalesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

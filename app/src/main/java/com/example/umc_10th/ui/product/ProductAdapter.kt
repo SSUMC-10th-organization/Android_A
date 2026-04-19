@@ -1,9 +1,9 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.product
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.umc_10th.data.Product
+import com.example.umc_10th.data.model.Product
 import com.example.umc_10th.databinding.ItemHomeBinding
 
 //1. 클래스 선언 및 생성자
@@ -51,6 +51,17 @@ class ProductAdapter( //RecyclerView에 데이터 공급 및 View를 관리할 A
         //생성된 바인딩 객체를 들고 있는 뷰홀더를 반환
     }
 
+    fun updateList(newList: List<Product>) {
+        // 1. 기존에 들고 있던 리스트의 내용을 싹 비웁니다.
+        productList.clear()
+
+        // 2. 새로운 리스트의 내용을 모두 추가합니다.
+        productList.addAll(newList)
+
+        // 3. 어댑터에게 데이터가 바뀌었으니 화면을 다시 그리라고 명령합니다. (핵심!)
+        notifyDataSetChanged()
+    }
+
     //5. 데이터 연결 및 개수 확인
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         //생성된 ViewHolder에 데이터를 실제로 그려주는 단계, 스크롤을 내릴 때마다 계속 호출됨
@@ -58,6 +69,10 @@ class ProductAdapter( //RecyclerView에 데이터 공급 및 View를 관리할 A
         //현재 순서(position)에 맞는 데이터를 리스트에서 꺼내 뷰홀더의 bind 함수로 전달
     }
 
+
+
     override fun getItemCount(): Int = productList.size
     //리사이클러뷰에게 그려야 할 아이템이 총 몇 개인지 리스트의 크기(size)를 반환
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.umc_10th.fragment
+package com.example.umc_10th.ui.purchase
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.umc_10th.databinding.FragmentPurchaseBinding
+import com.example.umc_10th.ui.product.AllFragment
+import com.example.umc_10th.ui.purchase.SalesFragment
+import com.example.umc_10th.ui.product.TopsTshirtsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class PurchaseFragment : Fragment() {

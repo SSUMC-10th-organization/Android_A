@@ -1,10 +1,11 @@
-package com.example.umc_10th.adapter
+package com.example.umc_10th.ui.profile
 
+import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.umc_10th.data.UserData
+import com.example.umc_10th.data.model.UserData
 import com.example.umc_10th.databinding.ItemFollowingBinding
 
 //1. 클래스 선언 및 생성자
@@ -23,7 +24,7 @@ class ProfileAdapter(private var userList: List<UserData>) :
             // 이미지 로딩 라이브러리인 Glide 시작, 이미지뷰의 context를 넘겨주어 생명주기에 맞게 이미지를 관리
             Glide.with(binding.ivFollowingUser.context)
                 .load(user.avatar) //로드 대상
-                .placeholder(android.R.color.darker_gray) // 로딩 중 보일 임시 색상
+                .placeholder(R.color.darker_gray) // 로딩 중 보일 임시 색상
                 .into(binding.ivFollowingUser) //최종적으로 이미지를 넣을 대상
         }
     }
