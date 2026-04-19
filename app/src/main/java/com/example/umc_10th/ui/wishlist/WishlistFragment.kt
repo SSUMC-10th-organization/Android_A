@@ -5,17 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.umc_10th.databinding.FragmentWishlistBinding
-import com.example.umc_10th.ui.main.MainActivity
+import com.example.umc_10th.ui.product.WishlistViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
     // 1. ViewBinding 설정
+    private val viewModel: WishlistViewModel by viewModels()
     private var _binding: FragmentWishlistBinding? = null
     private val binding get() = _binding!!
+    private lateinit var wishlistAdapter: WishlistAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,32 +36,31 @@ class WishlistFragment : Fragment() {
 
         // 3. 리사이클러뷰 초기화 함수 호출
         initRecyclerView()
+        observeViewModel()
+        viewModel.fetchWishlist() // 데이터 요청
     }
 
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.wishlist.collect { list ->
+                // 어댑터에 updateList 함수가 있다면 사용 (없으면 AllFragment 때처럼 추가!)
+                wishlistAdapter.updateList(list)
+            }
+        }
+    }
+
+
     private fun initRecyclerView() {
-        // 1. WishlistStorage에서 데이터 가져오기
-        val wishlistData = MainActivity.Companion.wishlistStorage.getWishlist().toMutableList()
-
-        // 2. 어댑터 생성 시 클릭 리스너(삭제 로직) 전달
-        val wishlistAdapter = WishlistAdapter(
-            itemList = wishlistData,
+        wishlistAdapter = WishlistAdapter(
+            itemList = mutableListOf(),
             onHeartClicked = { product ->
-                // 🛑 [핵심] 저장소에서 삭제
-                MainActivity.Companion.wishlistStorage.removeProduct(product)
-
-                // 🔄 [핵심] 현재 위시리스트 화면에서 즉시 제거 및 갱신
-                wishlistData.remove(product)
-                binding.wishlistRecyclerView.adapter?.notifyDataSetChanged()
-
-                // 이제 사용자가 '구매하기' 탭으로 돌아가면
-                // 그쪽의 onResume이 돌면서 하트가 빈 상태로 바뀔 거예요!
+                // 직접 리스트 지우지 않고 뷰모델에게 토스!
+                viewModel.removeFromWishlist(product)
             }
         )
-
         binding.wishlistRecyclerView.apply {
             adapter = wishlistAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
-            setHasFixedSize(true)
         }
     }
 

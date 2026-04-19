@@ -12,8 +12,16 @@ import com.example.umc_10th.ui.purchase.PurchaseFragment
 import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
 import com.example.umc_10th.ui.wishlist.WishlistFragment
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var hiltPrefManager: SharedPreferenceManager
+
+    @Inject
+    lateinit var hiltWishlistStorage: WishlistStorage
 
     //1. 전역 인스턴스 관리 (Companion Object)
     companion object {
@@ -25,17 +33,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        prefManager = hiltPrefManager
+        wishlistStorage = hiltWishlistStorage
 
         // 2. 초기 설정 및 데이터 로드 (onCreate)
-        prefManager = SharedPreferenceManager(this)
-        wishlistStorage = WishlistStorage(prefManager)
         wishlistStorage.loadFromDataStore()
         //객체 생성: 저장소 매니저와 관리자(Storage)를 메모리에 올림
         //loadFromDataStore()를 호출
         //이전에 저장된 위시리스트 데이터를 미리 불러옴 (탭 이동 시 딜레이 제거)
 
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //3. 화면 초기값 설정 (Fragment Transaction)

@@ -13,17 +13,21 @@ import com.example.umc_10th.data.model.Product
 import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.ui.main.MainActivity
 import com.example.umc_10th.ui.product.ProductAdapter
+import com.example.umc_10th.ui.viewmodel.HomeViewModel
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import androidx.fragment.app.viewModels
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private var productList = mutableListOf<Product>()
+    // [1] ViewModel 주입
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,51 +40,34 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initDummyData()
         initRecyclerView()
+        observeViewModel() // [2] 뷰모델 관찰 시작
+
+        viewModel.fetchHomeProducts() // [3] 데이터 요청
     }
 
-    private fun initDummyData() {
-        val type = object : TypeToken<List<Product>>() {}.type
-
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // 1. DataStore에서 먼저 데이터를 읽어옴
-            val savedList = MainActivity.Companion.prefManager.getObjectList<Product>(
-                SharedPreferenceManager.Companion.KEY_HOME_PRODUCTS, type
-            ).first()
-
-            if (savedList.isEmpty()) {
-                // 2. 데이터가 없으면 더미 데이터 생성 및 저장
-                val dummy = mutableListOf(
-                    Product(imageRes = R.drawable.shoes1, name = "Air Jordan XXXVI", price = "US$185"),
-                    Product(imageRes = R.drawable.shoes2, name = "Nike Air Force 1 '07", price = "US$115")
-                )
-                productList.clear()
-                productList.addAll(dummy)
-
-                MainActivity.Companion.prefManager.saveObjectList(
-                    SharedPreferenceManager.Companion.KEY_HOME_PRODUCTS,
-                    dummy
-                )
-            } else {
-                // 3. 저장된 데이터가 있으면 리스트에 채우기
-                productList.clear()
-                productList.addAll(savedList)
+            // 뷰모델의 products 상태를 관찰하다가 데이터가 오면 어댑터 갱신
+            viewModel.products.collect { list ->
+                // ProductAdapter에 updateData 같은 함수가 없다면 리스트 통째로 교체
+                // productAdapter = ProductAdapter(list) { ... } 식의 기존 로직 활용
+                (binding.productRecyclerView.adapter as? ProductAdapter)?.let {
+                    // 어댑터 내부에 리스트를 업데이트하는 함수가 있다고 가정 (없으면 새로 만들기!)
+                    it.updateList(list)
+                }
             }
-
-            // 4. 비동기 로딩이 끝났으므로 어댑터에 데이터 변경 알림
-            binding.productRecyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
     private fun initRecyclerView() {
-        val productAdapter = ProductAdapter(productList) { product ->
+        productAdapter = ProductAdapter(mutableListOf()) { product ->
             // 클릭 시 동작
         }
-
-        binding.productRecyclerView.adapter = productAdapter
-        binding.productRecyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.productRecyclerView.apply {
+            adapter = productAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     override fun onDestroyView() {

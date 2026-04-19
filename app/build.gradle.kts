@@ -68,5 +68,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
 
 }

@@ -26,7 +26,7 @@ class UserViewModel @Inject constructor(
                 val response = userRepository.getUserList(page)
                 _userList.value = response.data
             } catch (e: Exception) {
-                // 에러 처리 로직 (Toast 메시지용 LiveData 등을 추가해도 좋아요)
+
             }
         }
     }
