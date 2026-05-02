@@ -1,10 +1,11 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.purchase
 
 import android.view.LayoutInflater
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.umc_10th.R
+import com.example.umc_10th.data.model.ProductData
 import com.example.umc_10th.databinding.ItemProductBinding
 
 class ProductAdapter(
@@ -23,7 +24,7 @@ class ProductAdapter(
             binding.tvPrice.text = product.price
 
             binding.tvBestSeller.visibility =
-                if (product.isBestSeller) VISIBLE else GONE
+                if (product.isBestSeller) View.VISIBLE else View.GONE
 
             binding.btnLike.setImageResource(
                 if (product.isLiked) R.drawable.ic_heart_filled

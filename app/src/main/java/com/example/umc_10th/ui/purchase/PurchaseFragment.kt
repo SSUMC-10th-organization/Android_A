@@ -1,12 +1,19 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.purchase
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.example.umc_10th.ui.purchase.PurchaseTabPagerAdapter
+import com.example.umc_10th.R
 import com.example.umc_10th.databinding.FragmentPurchaseBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.fragment.app.viewModels
+
+@AndroidEntryPoint
 class PurchaseFragment : Fragment(R.layout.fragment_purchase) {
+    private val viewModel: PurchaseViewModel by viewModels()
 
     private var _binding: FragmentPurchaseBinding? = null
     private val binding get() = _binding!!

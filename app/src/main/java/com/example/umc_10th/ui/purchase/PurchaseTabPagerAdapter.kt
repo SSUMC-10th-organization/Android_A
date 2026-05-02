@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.purchase
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

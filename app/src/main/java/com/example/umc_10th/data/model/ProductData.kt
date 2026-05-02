@@ -1,5 +1,4 @@
-package com.example.umc_10th
-
+package com.example.umc_10th.data.model
 
 data class ProductData (
     val id: Int,

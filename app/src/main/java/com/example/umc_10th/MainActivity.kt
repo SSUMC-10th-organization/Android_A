@@ -6,7 +6,13 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.umc_10th.databinding.ActivityMainBinding
-
+import com.example.umc_10th.ui.cart.CartFragment
+import com.example.umc_10th.ui.home.HomeFragment
+import com.example.umc_10th.ui.profile.ProfileFragment
+import com.example.umc_10th.ui.purchase.PurchaseFragment
+import com.example.umc_10th.ui.wishlist.WishlistFragment
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

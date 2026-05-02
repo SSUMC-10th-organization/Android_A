@@ -1,10 +1,13 @@
-package com.example.umc_10th
+package com.example.umc_10th.data.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.umc_10th.data.local.ProductJsonUtil
+import com.example.umc_10th.data.local.ProductSampleRepository
+import com.example.umc_10th.data.model.ProductData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first

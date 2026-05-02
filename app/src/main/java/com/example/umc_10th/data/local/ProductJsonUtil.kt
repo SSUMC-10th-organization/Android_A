@@ -1,5 +1,6 @@
-package com.example.umc_10th
+package com.example.umc_10th.data.local
 
+import com.example.umc_10th.data.model.ProductData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
