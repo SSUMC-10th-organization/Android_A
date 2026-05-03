@@ -9,10 +9,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
     namespace = "com.example.umc_10th"
-
-    compileSdk = 36
+    compileSdk {
+        version = release(36) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "com.example.umc_10th"
@@ -33,14 +35,9 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = "11"
     }
 }
 
@@ -50,6 +47,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment.ktx)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -58,9 +56,11 @@ dependencies {
     implementation(libs.gson)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation(libs.androidx.fragment.ktx)
 }
