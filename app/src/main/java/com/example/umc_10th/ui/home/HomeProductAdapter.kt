@@ -1,8 +1,9 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.umc_10th.data.model.ProductData
 import com.example.umc_10th.databinding.ItemHomeProductBinding
 
 class HomeProductAdapter(

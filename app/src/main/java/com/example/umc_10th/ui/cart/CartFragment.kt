@@ -1,14 +1,20 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui.cart
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.umc_10th.R
 import com.example.umc_10th.databinding.FragmentCartBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.fragment.app.viewModels
+
+@AndroidEntryPoint
 class CartFragment : Fragment() {
+    private val viewModel: CartViewModel by viewModels()
 
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
