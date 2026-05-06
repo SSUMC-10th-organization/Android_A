@@ -26,6 +26,7 @@
     import com.example.umc_10th.ui.navigation.Screen
     import com.example.umc_10th.ui.profile.ProfileFragment
     import com.example.umc_10th.ui.purchase.PurchaseFragment
+    import com.example.umc_10th.ui.purchase.PurchaseScreen
     import com.example.umc_10th.ui.shoppingcart.ShoppingCartScreen
     //import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
     import com.example.umc_10th.ui.wishlist.WishlistFragment
@@ -85,12 +86,6 @@
     }
 
 
-    @Composable
-    fun PurchaseScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("🛍️ 구매하기 화면 (성공!)")
-        }
-    }
 
     @Composable
     fun WishlistScreen() {
