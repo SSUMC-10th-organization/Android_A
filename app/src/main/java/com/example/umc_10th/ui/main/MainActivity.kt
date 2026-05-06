@@ -30,6 +30,7 @@
     import com.example.umc_10th.ui.shoppingcart.ShoppingCartScreen
     //import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
     import com.example.umc_10th.ui.wishlist.WishlistFragment
+    import com.example.umc_10th.ui.wishlist.WishlistScreen
     import dagger.hilt.android.AndroidEntryPoint
     import javax.inject.Inject
 
@@ -87,12 +88,6 @@
 
 
 
-    @Composable
-    fun WishlistScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("❤️ 위시리스트 화면 (성공!)")
-        }
-    }
 
     @Composable
     fun ProfileScreen() {
