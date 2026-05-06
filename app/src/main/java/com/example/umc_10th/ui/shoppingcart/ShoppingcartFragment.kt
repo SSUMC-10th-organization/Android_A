@@ -1,4 +1,4 @@
-package com.example.umc_10th.ui.shoppingcart
+/*package com.example.umc_10th.ui.shoppingcart
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,4 +29,4 @@ class ShoppingcartFragment : Fragment() {
     }
 
 
-}
+} */

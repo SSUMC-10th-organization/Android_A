@@ -1,117 +1,107 @@
-package com.example.umc_10th.ui.main
+    package com.example.umc_10th.ui.main
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.umc_10th.R
-import com.example.umc_10th.data.local.SharedPreferenceManager
-import com.example.umc_10th.data.local.WishlistStorage
-import com.example.umc_10th.databinding.ActivityHomeBinding
-import com.example.umc_10th.ui.home.HomeFragment
-import com.example.umc_10th.ui.profile.ProfileFragment
-import com.example.umc_10th.ui.purchase.PurchaseFragment
-import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
-import com.example.umc_10th.ui.wishlist.WishlistFragment
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+    import android.os.Bundle
+    import androidx.activity.ComponentActivity
+    import androidx.activity.compose.setContent
+    import androidx.appcompat.app.AppCompatActivity
+    import androidx.compose.foundation.layout.Box
+    import androidx.compose.foundation.layout.fillMaxSize
+    import androidx.compose.foundation.layout.padding
+    import androidx.compose.material3.MaterialTheme
+    import androidx.compose.material3.Scaffold
+    import androidx.compose.material3.Text
+    import androidx.compose.runtime.Composable
+    import androidx.compose.ui.Alignment
+    import androidx.compose.ui.Modifier
+    import androidx.navigation.compose.NavHost
+    import androidx.navigation.compose.composable
+    import androidx.navigation.compose.rememberNavController
+    import com.example.umc_10th.R
+    import com.example.umc_10th.data.local.SharedPreferenceManager
+    import com.example.umc_10th.data.local.WishlistStorage
+    import com.example.umc_10th.databinding.ActivityHomeBinding
+    import com.example.umc_10th.ui.components.NikeBottomBar
+    import com.example.umc_10th.ui.home.HomeFragment
+    import com.example.umc_10th.ui.home.HomeScreen
+    import com.example.umc_10th.ui.navigation.Screen
+    import com.example.umc_10th.ui.profile.ProfileFragment
+    import com.example.umc_10th.ui.purchase.PurchaseFragment
+    import com.example.umc_10th.ui.shoppingcart.ShoppingCartScreen
+    //import com.example.umc_10th.ui.shoppingcart.ShoppingcartFragment
+    import com.example.umc_10th.ui.wishlist.WishlistFragment
+    import dagger.hilt.android.AndroidEntryPoint
+    import javax.inject.Inject
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+    @AndroidEntryPoint
+    class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var hiltPrefManager: SharedPreferenceManager
+        @Inject
+        lateinit var hiltPrefManager: SharedPreferenceManager
 
-    @Inject
-    lateinit var hiltWishlistStorage: WishlistStorage
+        @Inject
+        lateinit var hiltWishlistStorage: WishlistStorage
 
-    //1. 전역 인스턴스 관리 (Companion Object)
-    companion object {
-        lateinit var wishlistStorage: WishlistStorage
-        lateinit var prefManager: SharedPreferenceManager
-    }
-    //앱 어디서든 접근할 수 있는 공용 저장소 인스턴스를 선언
-    private lateinit var binding: ActivityHomeBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        prefManager = hiltPrefManager
-        wishlistStorage = hiltWishlistStorage
-
-        // 2. 초기 설정 및 데이터 로드 (onCreate)
-        wishlistStorage.loadFromDataStore()
-        //객체 생성: 저장소 매니저와 관리자(Storage)를 메모리에 올림
-        //loadFromDataStore()를 호출
-        //이전에 저장된 위시리스트 데이터를 미리 불러옴 (탭 이동 시 딜레이 제거)
-
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //3. 화면 초기값 설정 (Fragment Transaction)
-        if (savedInstanceState == null) {
-        // 앱이 처음 실행될 때만 HomeFragment를 띄움. 화면 회전 시 프래그먼트가 중복 생성되는 것을 방지
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, HomeFragment())
-                //기존에 있던 화면을 떼어내고 HomeFragment로 교체
-                .commitAllowingStateLoss()
-
+        // 다른 Fragment/Adapter에서 참조할 수 있도록 companion object 유지
+        companion object {
+            lateinit var wishlistStorage: WishlistStorage
+            lateinit var prefManager: SharedPreferenceManager
         }
 
-        // 4. 하단 탭 내비게이션 (BottomNavigationView)
-        binding.mainBnv.setOnItemSelectedListener { item ->
-            //사용자가 하단 바의 아이콘을 클릭할 때 발생하는 이벤트
-            when (item.itemId) {
-                // 클릭된 아이템의 ID에 맞춰 각각 다른 fragment를 main_frm(프레임 레이아웃) 자리에 끼워 넣음
-                R.id.homeFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, HomeFragment())
-                        .commitAllowingStateLoss()
-                    true //선택됨 상태
-                }
-                R.id.purchaseFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, ShoppingcartFragment())
-                        .commitAllowingStateLoss()
-                    true
-                }
-                R.id.wishlistFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, WishlistFragment())
-                        .commitAllowingStateLoss()
-                    true
-                }
-                R.id.shoppingcartFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, PurchaseFragment())
-                        .commitAllowingStateLoss()
-                    true
-                }
-                R.id.profileFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, ProfileFragment())
-                        .commitAllowingStateLoss()
-                    true
-                }
-                else -> false
-            }
-        }
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
 
+            // 전역 인스턴스에 주입된 값 할당 (빌드 에러 해결 포인트)
+            wishlistStorage = hiltWishlistStorage
+            prefManager = hiltPrefManager
 
-    }
+            // 기존 데이터 로드 로직 유지
+            hiltWishlistStorage.loadFromDataStore()
 
-    //5. 외부 제어 함수 (changeFragment)
-    fun changeFragment(index: Int) {
-        when (index) {
-            3 -> { // '구매' 탭으로 이동하고 싶을 때 (index 1로 가정)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, PurchaseFragment())
-                    .commitAllowingStateLoss()
+            setContent {
+                MaterialTheme {
+                    val navController = rememberNavController()
 
-                //selectedItemId를 직접 수정해서 하단 바의 선택된 아이콘 위치도 강제로 옮김
-                binding.mainBnv.selectedItemId = R.id.shoppingcartFragment
+                    Scaffold(
+                        bottomBar = {
+                            NikeBottomBar(navController = navController)
+                        }
+                    ) { innerPadding ->
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.Home.route,
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            // 주석을 해제하여 모든 화면을 연결합니다.
+                            composable(Screen.Home.route) { HomeScreen() }
+                            composable(Screen.Purchase.route) { PurchaseScreen() }
+                            composable(Screen.Wishlist.route) { WishlistScreen() }
+                            composable(Screen.Cart.route) { ShoppingCartScreen(navController) }
+                            composable(Screen.Profile.route) { ProfileScreen() }
+                        }
+                    }
+                }
             }
         }
     }
-    //특정 프래그먼트 내부에서 버튼을 눌러 다른 탭으로 이동하고 싶을 때 사용
 
 
-}
+    @Composable
+    fun PurchaseScreen() {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("🛍️ 구매하기 화면 (성공!)")
+        }
+    }
+
+    @Composable
+    fun WishlistScreen() {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("❤️ 위시리스트 화면 (성공!)")
+        }
+    }
+
+    @Composable
+    fun ProfileScreen() {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("👤 프로필 화면 (성공!)")
+        }
+    }
