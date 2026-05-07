@@ -15,18 +15,29 @@ class UserViewModel @Inject constructor(
     private val userRepository: UserRepository // 👈 Hilt가 Repository를 자동으로 넣어줍니다!
 ) : ViewModel() {
 
-    // UI에서 관찰할 유저 리스트 상태
+    // 1. 팔로잉 리스트 상태
     private val _userList = MutableStateFlow<List<UserData>>(emptyList())
     val userList: StateFlow<List<UserData>> = _userList
 
-    // 서버에서 유저 목록 가져오기
-    fun fetchUsers(page: Int) {
+    // 2. 내 정보 상태
+    private val _myInfo = MutableStateFlow<UserData?>(null)
+    val myInfo: StateFlow<UserData?> = _myInfo
+
+    // 서버에서 데이터 로드
+    fun fetchProfileData(page: Int, myId: Int) {
         viewModelScope.launch {
             try {
-                val response = userRepository.getUserList(page)
-                _userList.value = response.data
-            } catch (e: Exception) {
+                // 팔로잉 목록 가져오기
+                val listResponse = userRepository.getUserList(page)
+                _userList.value = listResponse.data
 
+                // 내 정보 가져오기 (Repository에 getSingleUser가 있다고 가정하거나,
+                // 임시로 리스트의 첫 번째 유저를 사용)
+                // 여기서는 리스트의 첫 번째 유저를 '나'라고 가정하거나
+                // 기존 Fragment 로직처럼 id 1번을 가져오는 로직을 추가할 수 있습니다.
+                _myInfo.value = listResponse.data.find { it.id == myId } ?: listResponse.data.firstOrNull()
+            } catch (e: Exception) {
+                // 에러 처리
             }
         }
     }

@@ -25,6 +25,7 @@
     import com.example.umc_10th.ui.home.HomeScreen
     import com.example.umc_10th.ui.navigation.Screen
     import com.example.umc_10th.ui.profile.ProfileFragment
+    import com.example.umc_10th.ui.profile.ProfileScreen
     import com.example.umc_10th.ui.purchase.PurchaseFragment
     import com.example.umc_10th.ui.purchase.PurchaseScreen
     import com.example.umc_10th.ui.shoppingcart.ShoppingCartScreen
@@ -88,10 +89,3 @@
 
 
 
-
-    @Composable
-    fun ProfileScreen() {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("👤 프로필 화면 (성공!)")
-        }
-    }
