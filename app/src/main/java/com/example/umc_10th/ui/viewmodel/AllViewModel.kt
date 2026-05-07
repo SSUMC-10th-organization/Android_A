@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.umc_10th.R
 import com.example.umc_10th.data.local.SharedPreferenceManager
+import com.example.umc_10th.data.local.WishlistStorage
 import com.example.umc_10th.data.model.PurchaseProduct
 import com.example.umc_10th.ui.main.MainActivity
 import com.google.gson.reflect.TypeToken
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllViewModel @Inject constructor(
-    private val prefManager: SharedPreferenceManager
+    private val prefManager: SharedPreferenceManager,
+    private val wishlistStorage: WishlistStorage // 👈 직접 주입받음
 ) : ViewModel() {
 
     private val _purchaseList = MutableStateFlow<List<PurchaseProduct>>(emptyList())
@@ -42,6 +44,17 @@ class AllViewModel @Inject constructor(
             // 하트 상태 최신화 후 방출
             _purchaseList.value = updateFavoriteStatus(currentList)
         }
+    }
+
+    // 👈 좋아요 클릭 시 호출할 함수 추가
+// 👈 위시리스트 저장소의 실제 함수(addProduct, removeProduct)를 사용하여 구현
+    fun toggleFavorite(product: PurchaseProduct) {
+        if (wishlistStorage.isFavorite(product.name)) {
+            wishlistStorage.removeProduct(product) // 이미 있다면 삭제
+        } else {
+            wishlistStorage.addProduct(product)    // 없다면 추가
+        }
+        refreshFavoriteStatus() // UI 갱신
     }
 
     // onResume 등에서 상태만 새로고침할 때 호출
