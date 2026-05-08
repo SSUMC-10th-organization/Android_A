@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_bag"
@@ -26,7 +26,7 @@
         android:layout_marginRight="40dp"
         android:text="장바구니가 비어 있습니다.\n제품을 추가하면 여기에 표시됩니다."
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:fontFamily="@font/noto_sans_regular"
         android:includeFontPadding="false"
         android:lineSpacingExtra="0dp"
@@ -44,9 +44,9 @@
         android:layout_marginBottom="22dp"
         android:text="주문하기"
         android:textSize="16sp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:fontFamily="@font/noto_sans_medium"
-        android:backgroundTint="#000000"
+        android:backgroundTint="@color/black"
         android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

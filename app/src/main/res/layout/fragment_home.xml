@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:paddingEnd="24dp"
             android:paddingTop="50dp"
             android:text="Discover"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="28sp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
@@ -39,7 +39,7 @@
             android:paddingBottom="50dp"
             android:text="9월 4일 목요일"
             android:textSize="16sp"
-            android:textColor="#767676"
+            android:textColor="@color/gray_700"
             android:fontFamily="@font/noto_sans_regular"
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
@@ -55,7 +55,7 @@
             android:layout_marginTop="9dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#EDE8D0"
+            app:cardBackgroundColor="@color/beige"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="What's new"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:fontFamily="@font/noto_sans_medium"
             android:includeFontPadding="false"
@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="나이키 최신 상품"
-            android:textColor="#767676"
+            android:textColor="@color/gray_700"
             android:textSize="28sp"
             android:fontFamily="@font/noto_sans_medium"
             android:includeFontPadding="false"

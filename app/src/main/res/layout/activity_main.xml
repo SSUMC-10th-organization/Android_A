@@ -24,7 +24,7 @@
         android:paddingEnd="6dp"
         android:paddingTop="3dp"
         android:paddingBottom="6dp"
-        android:background="#FFFFFF"
+        android:background="@color/white"
         app:itemBackground="@android:color/transparent"
         app:itemRippleColor="@android:color/transparent"
         app:itemActiveIndicatorStyle="@android:color/transparent"
