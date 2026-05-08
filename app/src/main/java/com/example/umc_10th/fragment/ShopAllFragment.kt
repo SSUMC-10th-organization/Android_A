@@ -14,9 +14,7 @@ import com.example.umc_10th.databinding.FragmentShopAllBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
 import com.example.umc_10th.updateProductFavorite
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ShopAllFragment : Fragment() {
 
@@ -53,20 +51,18 @@ class ShopAllFragment : Fragment() {
                 startActivity(intent)
             },
             onFavoriteClick = { product, _ ->
-                lifecycleScope.launch(Dispatchers.IO) {
+                viewLifecycleOwner.lifecycleScope.launch {
                     updateProductFavorite(requireContext(), product.id, product.isFavorite)
                 }
             }
         )
         binding.rvProducts.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO) {
+        viewLifecycleOwner.lifecycleScope.launch {
             initializeProductsIfEmpty(requireContext())
 
             getProductsFlow(requireContext()).collect { products ->
-                withContext(Dispatchers.Main) {
-                    adapter.updateProducts(products)
-                }
+                adapter.updateProducts(products)
             }
         }
     }

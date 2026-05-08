@@ -13,9 +13,7 @@ import com.example.umc_10th.ProductDetailActivity
 import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -40,8 +38,7 @@ class HomeFragment : Fragment() {
             false
         )
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            // 최초 진입 시 더미 데이터를 DataStore에 저장
+        viewLifecycleOwner.lifecycleScope.launch {
             initializeProductsIfEmpty(requireContext())
 
             getProductsFlow(requireContext()).collect { allProducts ->
@@ -50,18 +47,16 @@ class HomeFragment : Fragment() {
                     allProducts.firstOrNull { it.id == 3 }
                 ).filterNotNull()
 
-                withContext(Dispatchers.Main) {
-                    binding.rvHomeProducts.adapter = HomeProductAdapter(homeProducts) { product ->
-                        val intent = Intent(requireContext(), ProductDetailActivity::class.java).apply {
-                            putExtra("product_id", product.id)
-                            putExtra("product_name", product.name)
-                            putExtra("product_description", product.description)
-                            putExtra("product_price", product.price)
-                            putExtra("product_image", product.imageRes)
-                            putExtra("product_favorite", product.isFavorite)
-                        }
-                        startActivity(intent)
+                binding.rvHomeProducts.adapter = HomeProductAdapter(homeProducts) { product ->
+                    val intent = Intent(requireContext(), ProductDetailActivity::class.java).apply {
+                        putExtra("product_id", product.id)
+                        putExtra("product_name", product.name)
+                        putExtra("product_description", product.description)
+                        putExtra("product_price", product.price)
+                        putExtra("product_image", product.imageRes)
+                        putExtra("product_favorite", product.isFavorite)
                     }
+                    startActivity(intent)
                 }
             }
         }
