@@ -16,8 +16,10 @@ import com.example.umc_10th.initializeProductsIfEmpty
 import com.example.umc_10th.updateProductFavorite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
     private var _binding: FragmentWishlistBinding? = null

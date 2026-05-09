@@ -13,8 +13,10 @@ import com.example.umc_10th.ProductDetailActivity
 import com.example.umc_10th.databinding.FragmentHomeBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null

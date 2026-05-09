@@ -14,8 +14,10 @@ import com.example.umc_10th.databinding.FragmentShopAllBinding
 import com.example.umc_10th.getProductsFlow
 import com.example.umc_10th.initializeProductsIfEmpty
 import com.example.umc_10th.updateProductFavorite
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ShopAllFragment : Fragment() {
 
     private var _binding: FragmentShopAllBinding? = null

@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.umc_10th.MainActivity
 import com.example.umc_10th.adapter.FollowingAdapter
 import com.example.umc_10th.databinding.FragmentProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null

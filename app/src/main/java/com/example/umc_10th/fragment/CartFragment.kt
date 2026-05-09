@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.umc_10th.MainActivity
 import com.example.umc_10th.databinding.FragmentCartBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null
