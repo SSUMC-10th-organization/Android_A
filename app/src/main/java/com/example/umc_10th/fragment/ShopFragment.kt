@@ -11,7 +11,9 @@ import com.example.umc_10th.R
 import com.example.umc_10th.adapter.ShopPagerAdapter
 import com.example.umc_10th.databinding.FragmentShopBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ShopFragment : Fragment() {
 
     private var _binding: FragmentShopBinding? = null

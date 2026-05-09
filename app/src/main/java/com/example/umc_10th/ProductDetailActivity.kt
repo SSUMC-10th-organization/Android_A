@@ -1,15 +1,16 @@
 package com.example.umc_10th
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.umc_10th.databinding.ActivityProductDetailBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
+    private val viewModel: ProductDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +45,7 @@ class ProductDetailActivity : AppCompatActivity() {
             isFavorite = !isFavorite
             updateFavoriteIcon(isFavorite)
             if (productId != -1) {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    updateProductFavorite(applicationContext, productId, isFavorite)
-                }
+                viewModel.toggleFavorite(productId, isFavorite)
             }
         }
     }

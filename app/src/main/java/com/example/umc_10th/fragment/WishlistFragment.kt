@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.umc_10th.WishlistViewModel
 import com.example.umc_10th.adapter.ProductAdapter
 import com.example.umc_10th.ProductDetailActivity
 import com.example.umc_10th.databinding.FragmentWishlistBinding
-import com.example.umc_10th.getProductsFlow
-import com.example.umc_10th.initializeProductsIfEmpty
-import com.example.umc_10th.updateProductFavorite
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
     private var _binding: FragmentWishlistBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: WishlistViewModel by viewModels()
     private lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
@@ -55,21 +55,14 @@ class WishlistFragment : Fragment() {
             onFavoriteClick = { product, position ->
                 // 하트 해제 시 즉시 리스트에서 제거
                 adapter.removeAt(position)
-                lifecycleScope.launch(Dispatchers.IO) {
-                    updateProductFavorite(requireContext(), product.id, product.isFavorite)
-                }
+                viewModel.toggleFavorite(product.id, product.isFavorite)
             }
         )
         binding.rvWishlist.adapter = adapter
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            initializeProductsIfEmpty(requireContext())
-
-            getProductsFlow(requireContext()).collect { allProducts ->
-                val wishlistProducts = allProducts.filter { it.isFavorite }
-                withContext(Dispatchers.Main) {
-                    adapter.updateProducts(wishlistProducts)
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.wishlistProducts.collect { products ->
+                adapter.updateProducts(products)
             }
         }
     }

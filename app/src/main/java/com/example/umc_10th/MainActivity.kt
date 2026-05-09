@@ -15,7 +15,9 @@ import com.example.umc_10th.fragment.HomeFragment
 import com.example.umc_10th.fragment.ProfileFragment
 import com.example.umc_10th.fragment.ShopFragment
 import com.example.umc_10th.fragment.WishlistFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

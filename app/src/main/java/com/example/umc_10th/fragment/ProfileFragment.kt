@@ -5,16 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.umc_10th.MainActivity
+import com.example.umc_10th.ProfileViewModel
 import com.example.umc_10th.adapter.FollowingAdapter
 import com.example.umc_10th.databinding.FragmentProfileBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
+    // Activity에서 만든 ViewModel을 공유해서 사용
+    private val profileViewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,8 +33,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val profileViewModel = (requireActivity() as MainActivity).profileViewModel
 
         profileViewModel.userProfile.observe(viewLifecycleOwner) { user ->
             user ?: return@observe
