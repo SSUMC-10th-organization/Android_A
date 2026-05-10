@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
-    alias(libs.plugins.hilt) apply false
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.21" apply false
+    id("com.google.devtools.ksp") version "2.3.7" apply false
+    id("com.google.dagger.hilt.android") version "2.59.2" apply false
 }
