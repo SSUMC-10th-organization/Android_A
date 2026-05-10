@@ -28,7 +28,6 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnOrder.setOnClickListener {
-            (activity as? MainActivity)?.navigateToShop()
         }
     }
 

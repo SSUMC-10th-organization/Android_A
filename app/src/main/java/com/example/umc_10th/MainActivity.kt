@@ -1,81 +1,134 @@
 package com.example.umc_10th
 
 import android.os.Bundle
-import android.view.ViewGroup
-import android.widget.TextView
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.umc_10th.databinding.ActivityMainBinding
-import com.example.umc_10th.fragment.CartFragment
-import com.example.umc_10th.fragment.HomeFragment
-import com.example.umc_10th.fragment.ProfileFragment
-import com.example.umc_10th.fragment.ShopFragment
-import com.example.umc_10th.fragment.WishlistFragment
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalRippleConfiguration
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.umc_10th.navigation.AppDestination
+import com.example.umc_10th.navigation.BottomNavItem
+import com.example.umc_10th.ui.screen.CartScreen
+import com.example.umc_10th.ui.screen.HomeScreen
+import com.example.umc_10th.ui.screen.ProfileScreen
+import com.example.umc_10th.ui.screen.ShopScreen
+import com.example.umc_10th.ui.screen.WishlistScreen
+import com.example.umc_10th.ui.theme.Gray700
+import com.example.umc_10th.ui.theme.UmcAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    val profileViewModel: ProfileViewModel by viewModels()
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        profileViewModel.prefetch()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentContainer) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(0, systemBars.top, 0, 0)
-            insets
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(0, 0, 0, systemBars.bottom)
-            insets
-        }
-
-        val typeface = ResourcesCompat.getFont(this, R.font.noto_sans_regular)
-
-        for (i in 0 until binding.bottomNav.menu.size()) {
-            val menuView = binding.bottomNav.getChildAt(0) as ViewGroup
-            val itemView = menuView.getChildAt(i) as ViewGroup
-            for (j in 0 until itemView.childCount) {
-                val view = itemView.getChildAt(j)
-                if (view is TextView) {
-                    view.typeface = typeface
-                }
+        setContent {
+            UmcAppTheme {
+                MainScreen()
             }
-        }
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, HomeFragment())
-            .commit()
-
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            val fragment = when (item.itemId) {
-                R.id.nav_home       -> HomeFragment()
-                R.id.nav_shop       -> ShopFragment()
-                R.id.nav_wishlist   -> WishlistFragment()
-                R.id.nav_cart       -> CartFragment()
-                R.id.nav_profile    -> ProfileFragment()
-                else -> return@setOnItemSelectedListener false
-            }
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit()
-            true
         }
     }
+}
 
-    fun navigateToShop() {
-        binding.bottomNav.selectedItemId = R.id.nav_shop
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = { BottomBar(navController) }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = AppDestination.Home,
+            modifier = Modifier.padding(innerPadding),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
+        ) {
+            composable<AppDestination.Home> { HomeScreen() }
+            composable<AppDestination.Shop> { ShopScreen() }
+            composable<AppDestination.Wishlist> { WishlistScreen() }
+            composable<AppDestination.Cart> {
+                CartScreen(
+                    onNavigateToShop = {
+                        navController.navigate(AppDestination.Shop) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+            composable<AppDestination.Profile> { ProfileScreen() }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomBar(navController: NavController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route ?: ""
+
+    NavigationBar(
+        containerColor = Color.White,
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+    ) {
+        BottomNavItem.entries.forEach { item ->
+            CompositionLocalProvider(LocalRippleConfiguration provides null) {
+                NavigationBarItem(
+                    selected = currentRoute == item.destination::class.qualifiedName,
+                    onClick = {
+                        navController.navigate(item.destination) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(item.iconRes),
+                            contentDescription = item.label
+                        )
+                    },
+                    label = { Text(item.label) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.Black,
+                        selectedTextColor = Color.Black,
+                        unselectedIconColor = Gray700,
+                        unselectedTextColor = Gray700,
+                        indicatorColor = Color.Transparent
+                    )
+                )
+            }
+        }
     }
 }
