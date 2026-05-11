@@ -78,7 +78,9 @@ fun WishlistScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(wishlist) { product ->
+                items(items = wishlist,
+                key = {it.purchaseId}
+                ) { product ->
                     WishlistProductItem(
                         product = product,
                         onHeartClick = { viewModel.removeFromWishlist(product) }

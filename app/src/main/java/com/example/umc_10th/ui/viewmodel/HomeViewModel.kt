@@ -35,8 +35,8 @@ class HomeViewModel @Inject constructor(
             if (savedList.isEmpty()) {
                 // 2. 없으면 더미 생성 및 저장
                 val dummy = listOf(
-                    Product(imageRes = R.drawable.shoes1, name = "Air Jordan XXXVI", price = "US$185"),
-                    Product(imageRes = R.drawable.shoes2, name = "Nike Air Force 1 '07", price = "US$115")
+                    Product(id = 0, imageRes = R.drawable.shoes1, name = "Air Jordan XXXVI", price = "US$185"),
+                    Product(id = 1, imageRes = R.drawable.shoes2, name = "Nike Air Force 1 '07", price = "US$115")
                 )
                 prefManager.saveObjectList(SharedPreferenceManager.KEY_HOME_PRODUCTS, dummy)
                 _products.value = dummy

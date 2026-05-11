@@ -73,48 +73,56 @@ class AllViewModel @Inject constructor(
     private fun createDummyData(): List<PurchaseProduct> {
         val dummy = mutableListOf(
             PurchaseProduct(
+                purchaseId = 0,
                 imageRes = R.drawable.socks1,
                 name = "Nike Everyday Plus\nCushioned",
                 explain = "Training Ankle Socks (6 Pairs)\n5 Colours",
                 price = "US$20"
             ),
             PurchaseProduct(
+                purchaseId = 1,
                 imageRes = R.drawable.socks2,
                 name = "Nike Elite Crew",
                 explain = "Basketball Crew Socks\n3 Colours",
                 price = "US$160"
             ),
             PurchaseProduct(
+                purchaseId = 2,
                 imageRes = R.drawable.women_shoes,
                 name = "Nike Air Force 1 '07",
                 explain = "Classic Design",
                 price = "US$115"
             ),
             PurchaseProduct(
+                purchaseId = 3,
                 imageRes = R.drawable.men_shoes,
                 name = "Jordan Essentials",
                 explain = "Comfortable Fit",
                 price = "US$35"
             ),
             PurchaseProduct(
+                purchaseId = 4,
                 imageRes = R.drawable.socks1,
                 name = "Nike Spark Lightweight",
                 explain = "Breathable Fabric",
                 price = "US$18"
             ),
             PurchaseProduct(
+                purchaseId = 5,
                 imageRes = R.drawable.socks2,
                 name = "Nike Multiplier",
                 explain = "Performance Socks",
                 price = "US$22"
             ),
             PurchaseProduct(
+                purchaseId = 6,
                 imageRes = R.drawable.women_shoes,
                 name = "Nike Air Max Pro",
                 explain = "Air Cushioning",
                 price = "US$180"
             ),
             PurchaseProduct(
+                purchaseId = 7,
                 imageRes = R.drawable.men_shoes,
                 name = "Nike Pegasus 40",
                 explain = "Running Shoes",

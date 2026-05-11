@@ -72,7 +72,8 @@ fun PurchaseScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(purchaseList) { product ->
+            items(items = purchaseList,
+                key = {it.purchaseId}) { product ->
                 PurchaseProductItem(
                     product = product,
                     onFavoriteClick = { viewModel.toggleFavorite(product) }
