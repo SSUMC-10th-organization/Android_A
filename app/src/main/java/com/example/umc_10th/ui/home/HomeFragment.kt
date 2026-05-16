@@ -4,25 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.umc_10th.data.local.ProductDataStore
-import com.example.umc_10th.databinding.FragmentHomeBinding
-import kotlinx.coroutines.launch
-
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.umc_10th.data.local.ProductDataStore
+import com.example.umc_10th.data.model.ProductData
+import com.example.umc_10th.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var homeProductAdapter: HomeProductAdapter
     private lateinit var productDataStore: ProductDataStore
+
+    private var homeProducts by mutableStateOf<List<ProductData>>(emptyList())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,14 +41,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         productDataStore = ProductDataStore(requireContext())
-        homeProductAdapter = HomeProductAdapter(mutableListOf())
 
-        binding.rvHomeProduct.apply {
-            adapter = homeProductAdapter
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
+        binding.cvHomeProduct.setContent {
+            HomeProductLazyRow(
+                products = homeProducts
             )
         }
 
@@ -52,8 +52,7 @@ class HomeFragment : Fragment() {
             productDataStore.initializeIfEmpty()
 
             productDataStore.getProductsFlow().collect { productList ->
-                val latestProducts = productList.takeLast(2)
-                homeProductAdapter.submitList(latestProducts)
+                homeProducts = productList.takeLast(2)
             }
         }
     }
