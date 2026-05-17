@@ -217,7 +217,7 @@ fun ProfileScreen(
                 .height(106.dp)
                 .padding(horizontal = 24.dp)
         ) {
-            items(followingList) { user ->
+            items(followingList, key = { it.id }) { user ->
                 AsyncImage(
                     model = user.avatar,
                     contentDescription = "${user.firstName} ${user.lastName}",

@@ -109,7 +109,7 @@ private fun ShopAllPage(
             .fillMaxSize()
             .padding(horizontal = 8.dp)
     ) {
-        items(products) { product ->
+        items(products, key = { it.id }) { product ->
             ProductGridItem(
                 product = product,
                 onFavoriteClick = { viewModel.toggleFavorite(product.id, !product.isFavorite) },
