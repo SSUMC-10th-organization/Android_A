@@ -104,7 +104,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(start = 24.dp),
             modifier = Modifier.padding(top = 22.dp, bottom = 16.dp)
         ) {
-            items(products) { product ->
+            items(products, key = { it.id }) { product ->
                 HomeProductItem(
                     product = product,
                     onClick = { onProductClick(product) }
