@@ -66,4 +66,11 @@ dependencies {
 
     // ViewPager2
     implementation("androidx.viewpager2:viewpager2:1.1.0")
+
+    // Retrofit2
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // Glide (이미지 URL 로딩)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
