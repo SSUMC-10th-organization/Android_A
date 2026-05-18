@@ -1,10 +1,11 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.umc_10th.R
 import com.example.umc_10th.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

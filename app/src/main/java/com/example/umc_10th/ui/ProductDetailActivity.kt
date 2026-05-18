@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
