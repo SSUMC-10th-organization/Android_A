@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     // 1. kapt 대신 ksp를 사용하므로 kapt 관련 아이디는 지우거나 ksp로 교체합니다.
     id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -73,4 +74,12 @@ dependencies {
 
     // Glide (이미지 URL 로딩)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    ksp("com.google.dagger:hilt-compiler:2.51.1")
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 }

@@ -7,12 +7,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.umc_10th.R
 import com.example.umc_10th.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater);
+        binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -22,21 +25,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.mainBottomNav.setOnItemSelectedListener { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.home_fragment -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_fragmentContainer, HomeFragment())
                         .commit()
                     true
                 }
-
                 R.id.purchase_fragment -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_fragmentContainer, PurchaseFragment())
                         .commit()
                     true
                 }
-
                 R.id.wishlist_fragment -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_fragmentContainer, WishlistFragment())
@@ -55,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
-
                 else -> false
             }
         }

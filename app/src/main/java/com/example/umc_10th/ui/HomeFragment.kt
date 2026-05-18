@@ -6,17 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.umc_10th.R
-import com.example.umc_10th.data.ProductDataStore
 import com.example.umc_10th.databinding.HomeFragmentBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
+import com.example.umc_10th.ui.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentBinding
+    private val viewModel: HomeViewModel by viewModels()
 
     private val dummyHomeProducts = listOf(
         ProductData(img = R.drawable.air_force_image, name = "Air Jordan XXXVI", price = "US\$185"),
@@ -63,16 +67,13 @@ class HomeFragment : Fragment() {
         binding.rcHome.adapter = homeAdapter
         binding.rcHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            // 최초 진입 시 DataStore가 비어있으면 홈 + 구매하기 더미 데이터 저장
-            val existing = ProductDataStore.getHomeProducts(requireContext()).first()
-            if (existing.isEmpty()) {
-                ProductDataStore.saveHomeProducts(requireContext(), dummyHomeProducts)
-                ProductDataStore.savePurchaseProducts(requireContext(), dummyPurchaseProducts)
-            }
+        viewModel.initializeIfEmpty(dummyHomeProducts, dummyPurchaseProducts)
 
-            ProductDataStore.getHomeProducts(requireContext()).collectLatest { products ->
-                homeAdapter.updateList(products)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.homeProducts.collect { products ->
+                    homeAdapter.updateList(products)
+                }
             }
         }
     }

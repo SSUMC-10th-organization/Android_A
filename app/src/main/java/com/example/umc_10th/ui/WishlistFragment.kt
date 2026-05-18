@@ -6,17 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.umc_10th.R
-import com.example.umc_10th.data.ProductDataStore
 import com.example.umc_10th.databinding.WishlistFragmentBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
+import com.example.umc_10th.ui.viewmodel.WishlistViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class WishlistFragment : Fragment() {
     private lateinit var binding: WishlistFragmentBinding
+    private val viewModel: WishlistViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +55,12 @@ class WishlistFragment : Fragment() {
         binding.rcWishlist.adapter = wishlistAdapter
         binding.rcWishlist.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        // DataStore에서 liked=true인 상품만 필터링하여 표시
         viewLifecycleOwner.lifecycleScope.launch {
-            ProductDataStore.getPurchaseProducts(requireContext())
-                .map { products -> products.filter { it.isLiked } }
-                .collectLatest { likedProducts ->
-                    wishlistAdapter.updateList(likedProducts)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.likedProducts.collect { products ->
+                    wishlistAdapter.updateList(products)
                 }
+            }
         }
     }
 }
