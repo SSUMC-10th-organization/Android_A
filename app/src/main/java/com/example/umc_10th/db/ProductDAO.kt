@@ -9,6 +9,9 @@ interface ProductDAO {
     @Insert
     fun insertProduct(product: ProductEntity)
 
+    @Insert
+    fun insertAll(productList: List<ProductEntity>)
+
     @Update
     fun updateProduct(product: ProductEntity)
 
