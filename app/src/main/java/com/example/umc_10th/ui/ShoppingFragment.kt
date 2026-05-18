@@ -1,20 +1,17 @@
-    package com.example.umc_10th
+package com.example.umc_10th.ui
 
     import android.os.Bundle
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
-    import androidx.activity.enableEdgeToEdge
     import androidx.constraintlayout.widget.ConstraintLayout
-    import androidx.core.view.ViewCompat
-    import androidx.core.view.WindowCompat.enableEdgeToEdge
-    import androidx.core.view.WindowInsetsCompat
     import androidx.fragment.app.Fragment
     import com.example.umc_10th.databinding.ShoppingFragmentBinding
 
 
-    import androidx.core.content.ContextCompat
-    class ShoppingFragment: Fragment(R.layout.shopping_fragment) {
+    import com.example.umc_10th.R
+
+class ShoppingFragment: Fragment(R.layout.shopping_fragment) {
         private lateinit var binding: ShoppingFragmentBinding
 
         override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.example.umc_10th
+package com.example.umc_10th.ui
 import java.io.Serializable
 
 data class DetailProductData(
