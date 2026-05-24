@@ -87,4 +87,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
