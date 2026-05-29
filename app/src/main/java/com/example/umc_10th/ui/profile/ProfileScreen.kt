@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -56,6 +59,7 @@ fun ProfileScreen(
         viewModel.fetchProfileData(page = 1, myId = 1)
     }
 
+    // 📦 메인 스크롤 영역 시작
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -119,25 +123,29 @@ fun ProfileScreen(
                 Text("편집", color = Color.Gray)
             }
 
-            LazyRow(
-                contentPadding = PaddingValues(top = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(userList) { user ->
-                    AsyncImage(
-                        model = user.avatar,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFFE0E0E0)),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-        }
+            val pagerState = rememberPagerState(pageCount = { userList.size })
 
-        // 5. 푸터
+            HorizontalPager(
+                state = pagerState,
+                pageSize = PageSize.Fixed(100.dp),
+                pageSpacing = 12.dp, // 원본 Arrangement.spacedBy(12.dp) 완벽 대체
+                contentPadding = PaddingValues(top = 16.dp), // 원본 top 패딩 유지
+            ) { page ->
+                val user = userList[page]
+
+                AsyncImage(
+                    model = user.avatar,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFE0E0E0)),
+                    contentScale = ContentScale.Crop
+                )
+            } // 👈 HorizontalPager 닫기
+        } // 👈 4번 팔로잉 Column 닫기 (🚨 잉여 괄호 제거 완료 🚨)
+
+        // 5. 푸터 (이제 정상적으로 맨 밑에 붙음!)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -147,8 +155,9 @@ fun ProfileScreen(
         ) {
             Text("회원 가입일: 2025년 9월", color = Color.LightGray, fontSize = 12.sp)
         }
-    }
+    } // 📦 메인 스크롤 Column 닫기
 }
+
 
 
 
