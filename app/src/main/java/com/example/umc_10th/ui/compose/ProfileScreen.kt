@@ -1,7 +1,5 @@
 package com.example.umc_10th.ui.compose
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -27,64 +26,31 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.umc_10th.R
-import com.example.umc_10th.retrofit.ApiClient
 import com.example.umc_10th.retrofit.UserData
-import com.example.umc_10th.retrofit.UserRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.net.URL
+import com.example.umc_10th.ui.profile.ProfileViewModel
 
 @Composable
-fun ProfileScreen() {
-    var user by remember { mutableStateOf<UserData?>(null) }
-    var followingUsers by remember { mutableStateOf<List<UserData>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        isLoading = true
-        errorMessage = null
-
-        val repository = UserRepository(ApiClient.userService)
-
-        val userResult = repository.getUser(id = 1)
-
-        userResult
-            .onSuccess { userData ->
-                user = userData
-            }
-            .onFailure { error ->
-                errorMessage = error.message ?: "프로필 정보를 불러오지 못했습니다."
-            }
-
-        val listResult = repository.getUserList(page = 1)
-
-        listResult
-            .onSuccess { users ->
-                followingUsers = users
-                    .filter { it.id != 1 }
-                    .take(3)
-            }
-            .onFailure {
-                followingUsers = emptyList()
-            }
-
-        isLoading = false
+        viewModel.loadProfile()
     }
 
     Column(
@@ -93,7 +59,7 @@ fun ProfileScreen() {
             .verticalScroll(rememberScrollState())
     ) {
         when {
-            isLoading -> {
+            uiState.isLoading -> {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -105,7 +71,7 @@ fun ProfileScreen() {
                 }
             }
 
-            errorMessage != null -> {
+            uiState.errorMessage != null -> {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,14 +80,14 @@ fun ProfileScreen() {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = errorMessage ?: "",
+                        text = uiState.errorMessage ?: "프로필 정보를 불러오지 못했습니다.",
                         color = Color.Red
                     )
                 }
             }
 
             else -> {
-                ProfileTopSection(user = user)
+                ProfileTopSection(user = uiState.user)
             }
         }
 
@@ -129,7 +95,7 @@ fun ProfileScreen() {
         GrayDivider()
         MemberBenefitSection()
         GrayDivider()
-        FollowingSection(followingUsers = followingUsers)
+        FollowingSection(followingUsers = uiState.followingUsers)
 
         Spacer(
             modifier = Modifier
@@ -208,36 +174,15 @@ private fun NetworkProfileImage(
     imageUrl: String?,
     modifier: Modifier = Modifier
 ) {
-    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-
-    LaunchedEffect(imageUrl) {
-        if (!imageUrl.isNullOrBlank()) {
-            bitmap = withContext(Dispatchers.IO) {
-                try {
-                    val inputStream = URL(imageUrl).openStream()
-                    BitmapFactory.decodeStream(inputStream)
-                } catch (e: Exception) {
-                    null
-                }
-            }
-        }
-    }
-
-    if (bitmap != null) {
-        Image(
-            bitmap = bitmap!!.asImageBitmap(),
-            contentDescription = "프로필 이미지",
-            modifier = modifier,
-            contentScale = ContentScale.Crop
-        )
-    } else {
-        Image(
-            painter = painterResource(id = R.drawable.ic_profile_sampleface),
-            contentDescription = "기본 프로필 이미지",
-            modifier = modifier,
-            contentScale = ContentScale.Crop
-        )
-    }
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = "프로필 이미지",
+        placeholder = painterResource(id = R.drawable.ic_profile_sampleface),
+        error = painterResource(id = R.drawable.ic_profile_sampleface),
+        fallback = painterResource(id = R.drawable.ic_profile_sampleface),
+        modifier = modifier,
+        contentScale = ContentScale.Crop
+    )
 }
 
 @Composable
@@ -385,20 +330,20 @@ private fun FollowingSection(
                 )
             }
         } else {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    end = 20.dp,
-                    bottom = 20.dp
-                )
-            ) {
-                items(
-                    items = followingUsers,
-                    key = { it.id }
-                ) { followingUser ->
-                    FollowingUserItem(user = followingUser)
-                }
+            val pagerState = rememberPagerState(
+                pageCount = { followingUsers.size }
+            )
+
+            HorizontalPager(
+                state = pagerState,
+                pageSize = PageSize.Fixed(120.dp),
+                pageSpacing = 12.dp,
+                contentPadding = PaddingValues(horizontal = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp)
+            ) { page ->
+                FollowingUserItem(user = followingUsers[page])
             }
         }
     }
@@ -409,14 +354,14 @@ private fun FollowingUserItem(
     user: UserData
 ) {
     Column(
-        modifier = Modifier
-            .padding(end = 12.dp)
-            .size(120.dp),
+        modifier = Modifier.size(120.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NetworkProfileImage(
             imageUrl = user.avatar,
-            modifier = Modifier.size(120.dp)
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
         )
     }
 }
