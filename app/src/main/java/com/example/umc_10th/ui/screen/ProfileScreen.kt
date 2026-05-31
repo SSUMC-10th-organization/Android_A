@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,8 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -53,7 +56,9 @@ fun ProfileScreen(
     val userProfile by viewModel.userProfile.observeAsState()
     val followingList by viewModel.followingList.observeAsState(emptyList())
 
-    viewModel.prefetch()
+    LaunchedEffect(Unit) {
+        viewModel.prefetch()
+    }
 
     Column(
         modifier = Modifier
@@ -211,22 +216,24 @@ fun ProfileScreen(
             )
         }
 
-        LazyRow(
+        val pagerState = rememberPagerState(pageCount = { followingList.size })
+
+        HorizontalPager(
+            state = pagerState,
+            pageSize = PageSize.Fixed(106.dp),
+            pageSpacing = 6.dp,
+            contentPadding = PaddingValues(horizontal = 24.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(106.dp)
-                .padding(horizontal = 24.dp)
-        ) {
-            items(followingList, key = { it.id }) { user ->
-                AsyncImage(
-                    model = user.avatar,
-                    contentDescription = "${user.firstName} ${user.lastName}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(106.dp)
-                        .padding(end = 6.dp)
-                )
-            }
+        ) { page ->
+            val user = followingList[page]
+            AsyncImage(
+                model = user.avatar,
+                contentDescription = "${user.firstName} ${user.lastName}",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(106.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(97.dp))
