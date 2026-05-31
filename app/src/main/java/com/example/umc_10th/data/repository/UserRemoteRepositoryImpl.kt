@@ -1,5 +1,6 @@
 package com.example.umc_10th.data.repository
 
+import android.util.Log
 import com.example.umc_10th.api.UserData
 import com.example.umc_10th.api.UserService
 import javax.inject.Inject
@@ -17,7 +18,7 @@ class UserRemoteRepositoryImpl @Inject constructor(
                 null
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "getUser failed for userId=$userId", e)
             null
         }
     }
@@ -31,8 +32,12 @@ class UserRemoteRepositoryImpl @Inject constructor(
                 emptyList()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "getUsers failed for page=$page", e)
             emptyList()
         }
+    }
+
+    companion object {
+        private const val TAG = "UserRemoteRepository"
     }
 }

@@ -11,5 +11,5 @@ data class Product (
     val isBestSeller: Boolean = false,
     @DrawableRes
     val imageRes: Int,
-    var isFavorite: Boolean = false
+    val isFavorite: Boolean = false
 )
